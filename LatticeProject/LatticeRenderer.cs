@@ -42,18 +42,6 @@ namespace LatticeProject
             }
         }
 
-        public static void DrawLatticeEdges(Lattice lattice, LatticeObjectManager obj)
-        {
-            for (int i = 0; i < obj.edges.Count; i++)
-            {
-                Vector2 start = lattice.GetCartesianCoords(obj.edges[i].Start);
-                Vector2 end = lattice.GetCartesianCoords(obj.edges[i].End);
-
-                Raylib.DrawLineEx(start * scale, end * scale, scale / 2.5f, Color.DarkBlue);
-                Raylib.DrawCircleV(start * scale, scale / 5f, Color.DarkBlue);
-            }
-        }
-
         public static void HighlightNeighbours(Lattice lattice, VecInt2 vertex)
         {
             VecInt2[] nOffsets = lattice.GetNeighbourOffsets();

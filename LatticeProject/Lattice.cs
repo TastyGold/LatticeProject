@@ -14,10 +14,10 @@ namespace LatticeProject
     {
         private static readonly VecInt2[] nOffsets =
         {
-            new VecInt2(0, -1),
-            new VecInt2(-1, 0),
             new VecInt2(1, 0),
             new VecInt2(0, 1),
+            new VecInt2(-1, 0),
+            new VecInt2(0, -1),
         };
         public override VecInt2[] GetNeighbourOffsets() => nOffsets;
 
@@ -38,8 +38,6 @@ namespace LatticeProject
         public const float sqrt3 = 1.73205080757f;
         public const float sqrt3_2 = 0.86602540378f;
         public const float sqrt3_3 = 0.57735026919f;
-
-        public bool horizontal = true;
 
         private static readonly VecInt2[] nOffsets =
         {

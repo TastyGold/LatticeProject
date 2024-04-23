@@ -61,7 +61,12 @@ namespace LatticeProject
         private float targetZoom = 1;
         private Vector2 targetPosition = Vector2.Zero;
 
-        public float cameraPanSpeed = 800;
+        public float cameraPanSpeed = 1200;
+        public float cameraZoomLerpSpeed = 40f;
+        public float cameraZoomFactor = 1.3f;
+
+        public float maxZoom = 2;
+        public float minZoom = 0.2f;
 
         public void UpdateCamera()
         {
@@ -71,15 +76,15 @@ namespace LatticeProject
 
         private void HandleCameraZooming()
         {
-            if (Raylib.GetMouseWheelMove() > 0 && targetZoom < 2)
+            if (Raylib.GetMouseWheelMove() > 0 && targetZoom < maxZoom)
             {
-                targetZoom *= 1.3f;
+                targetZoom *= cameraZoomFactor;
             }
-            if (Raylib.GetMouseWheelMove() < 0 && targetZoom > 0.2f)
+            if (Raylib.GetMouseWheelMove() < 0 && targetZoom > minZoom)
             {
-                targetZoom /= 1.3f;
+                targetZoom /= cameraZoomFactor;
             }
-            camera.Zoom = LatticeMath.Lerp(camera.Zoom, targetZoom, Raylib.GetFrameTime() * 20f);
+            camera.Zoom = LatticeMath.Lerp(camera.Zoom, targetZoom, Raylib.GetFrameTime() * cameraZoomLerpSpeed);
         }
 
         private void HandleCameraMovement()
@@ -91,15 +96,15 @@ namespace LatticeProject
             if (Raylib.IsKeyDown(KeyboardKey.W)) inputVector.Y--;
             if (Raylib.IsKeyDown(KeyboardKey.S)) inputVector.Y++;
 
-            if (inputVector.X != 0) inputVector.Y *= 0.577f;
-            else inputVector.X *= 0.866f;
+            if (inputVector.Y != 0 && Raylib.IsMouseButtonDown(0)) inputVector.X *= 0.577f;
+            if (inputVector != Vector2.Zero) inputVector = Vector2.Normalize(inputVector);
 
             targetPosition += inputVector * cameraPanSpeed * Raylib.GetFrameTime() * (Raylib.IsKeyDown(KeyboardKey.LeftShift) ? 2 : 1) / camera.Zoom;
 
             camera.Target = Vector2.Lerp(camera.Target, targetPosition, Raylib.GetFrameTime() * 20f);
         }
 
-        public LatticeCamera(Vector2 target, float zoom, float rotation, Vector2 offset, float cameraSpeed)
+        public LatticeCamera(Vector2 target, float zoom, float rotation, Vector2 offset)
         {
             camera = new Camera2D()
             {
@@ -108,7 +113,6 @@ namespace LatticeProject
                 Rotation = rotation,
                 Offset = offset,
             };
-            cameraPanSpeed = cameraSpeed;
         }
     }
 }

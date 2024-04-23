@@ -1,6 +1,6 @@
 ﻿namespace LatticeProject
 {
-    internal struct LatticeEdge
+    internal class LatticeEdge
     {
         public int startX;
         public int startY;
