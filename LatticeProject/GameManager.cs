@@ -6,14 +6,12 @@ namespace LatticeProject
     internal static class GameManager
     {
         //static Lattice mainLattice = new SquareLattice();
-        static Lattice mainLattice = new SquareLattice();
-        static LatticeObjectManager objManager = new LatticeObjectManager();
+        static Lattice mainLattice = new HexagonLattice();
         static LatticeChunk mainChunk = new LatticeChunk();
         static LatticeCamera mainCam = new LatticeCamera(Vector2.Zero, 1, 0, new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2));
         static Vector2 mousePosition = new Vector2();
         static VecInt2 lastClosestVertex = VecInt2.Zero;
         static VecInt2 closestVertex = VecInt2.Zero;
-        static VecInt2 lastDirection = VecInt2.Zero;
 
         public static void Begin()
         {
@@ -37,9 +35,6 @@ namespace LatticeProject
 
             if (closestVertex != lastClosestVertex && Raylib.IsMouseButtonDown(0))
             {
-                objManager.AddEdge(lastClosestVertex, closestVertex);
-                lastDirection = lastClosestVertex - closestVertex;
-
                 mainChunk.beltSegments[^1].vertices.Add(closestVertex);
             }
 
