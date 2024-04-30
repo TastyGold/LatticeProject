@@ -22,7 +22,7 @@ namespace LatticeProject.Core
         public static void Begin()
         {
             Raylib.InitWindow(1600, 900, "Hello World");
-            LatticeRenderer.scale = 150;
+            RenderConfig.scale = 150;
             mainChunk.beltSegments.Add(new BeltSegment());
         }
 
@@ -31,7 +31,7 @@ namespace LatticeProject.Core
             lastClosestVertex = closestVertex;
 
             mousePosition = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), mainCam.camera);
-            closestVertex = mainLattice.GetClosestVertex(mousePosition / LatticeRenderer.scale);
+            closestVertex = mainLattice.GetClosestVertex(mousePosition / RenderConfig.scale);
 
             //linePoints = mainLattice.GetLinePoints(VecInt2.Zero, closestVertex);
 
@@ -57,47 +57,13 @@ namespace LatticeProject.Core
                 lastBeltInv = mainChunk.beltSegments[^1].inventory;
             }
 
-            if (Raylib.IsKeyDown(KeyboardKey.J))
-            {
-                lastBeltInv.interItemDistances[0] -= Raylib.GetFrameTime() * 4;
-            }
-            if (Raylib.IsKeyDown(KeyboardKey.K))
-            {
-                lastBeltInv.interItemDistances[0] += Raylib.GetFrameTime() * 4;
-            }
+            if (Raylib.IsKeyDown(KeyboardKey.J)) lastBeltInv.interItemDistances[0] -= Raylib.GetFrameTime() * 4;
+            if (Raylib.IsKeyDown(KeyboardKey.K)) lastBeltInv.interItemDistances[0] += Raylib.GetFrameTime() * 4;
 
             mainCam.UpdateCamera();
 
-            Console.WriteLine(closestVertex.ToString());
-            //Console.WriteLine("Manhattan Distance = " + mainLattice.GetManhattanDistance(VecInt2.Zero, closestVertex));
-
-            if (Raylib.IsKeyPressed(KeyboardKey.P))
-            {
-                Console.WriteLine("Hi!");
-            }
-
             if (Raylib.IsKeyPressed(KeyboardKey.Left)) mainCam.camera.Rotation -= 30;
             if (Raylib.IsKeyPressed(KeyboardKey.Right)) mainCam.camera.Rotation += 30;
-        }
-
-        public static bool IsValidDirectionChange(VecInt2 lastDirection, VecInt2 currentDirection)
-        {
-            int last = -1;
-            int current = -1;
-            VecInt2[] nOffsets = mainLattice.GetNeighbourOffsets();
-
-            int i = 0;
-            while (i < nOffsets.Length && (last == -1 || current == -1))
-            {
-                if (lastDirection == nOffsets[i]) last = i;
-                if (currentDirection == nOffsets[i]) current = i;
-                i++;
-            }
-
-            if (last == current || last == -1 || current == -1) return true;
-
-            int difference = Math.Abs(last - current);
-            return difference == 1 || difference == nOffsets.Length - 1;
         }
 
         public static void Draw()
@@ -113,6 +79,7 @@ namespace LatticeProject.Core
             WorldChunkRenderer.DrawAllBeltSegments(mainLattice, mainChunk);
 
             LatticeRenderer.DrawVertex(mainLattice, closestVertex, 0.25f, Color.DarkGray);
+            BuildingRenderer.DrawBuilding(mainLattice, new Building() { Position = closestVertex }, Color.Gray);
             LatticeRenderer.DrawVertices(mainLattice, linePoints, 0.25f, Color.Blue);
             LatticeRenderer.HighlightNeighbours(mainLattice, closestVertex);
 

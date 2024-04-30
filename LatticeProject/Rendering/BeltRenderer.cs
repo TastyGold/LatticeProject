@@ -2,7 +2,7 @@
 using LatticeProject.Lattices;
 using Raylib_cs;
 using System.Numerics;
-using static LatticeProject.Rendering.LatticeRenderer;
+using static LatticeProject.Rendering.RenderConfig;
 
 namespace LatticeProject.Rendering
 {
@@ -21,7 +21,7 @@ namespace LatticeProject.Rendering
                 Vector2 end = lattice.GetCartesianCoords(segment.vertices[i + 1]);
 
                 float width = !outline ? scale * beltWidth : scale * (beltWidth + beltOutlineWidth);
-                Color col = outline ? beltOutlineColor : Colors.colors[i % Colors.numColors];
+                Color col = outline ? beltOutlineColor : beltColor; // Colors.colors[i % Colors.numColors];
 
                 Raylib.DrawLineEx(start * scale, end * scale, width, col);
                 Raylib.DrawCircleV(start * scale, width / 2, col);

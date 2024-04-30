@@ -6,15 +6,7 @@ namespace LatticeProject.Lattices
 {
     internal class HexagonLattice : Lattice
     {
-        private static readonly VecInt2[] nOffsets =
-        {
-            new VecInt2(0, -1),
-            new VecInt2(1, -1),
-            new VecInt2(-1, 0),
-            new VecInt2(1, 0),
-            new VecInt2(-1, 1),
-            new VecInt2(0, 1),
-        };
+        private static readonly VecInt2[] nOffsets = hexNeighbours;
         public override VecInt2[] GetNeighbourOffsets() => nOffsets;
 
         public override bool IsValidDirection(VecInt2 a, VecInt2 b)
