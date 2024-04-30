@@ -5,9 +5,12 @@ namespace LatticeProject
     internal abstract class Lattice
     {
         public abstract VecInt2[] GetNeighbourOffsets();
+        public abstract bool IsValidDirection(VecInt2 a, VecInt2 b);
         public abstract Vector2 GetCartesianCoords(int x, int y);
         public Vector2 GetCartesianCoords(VecInt2 vertex) => GetCartesianCoords(vertex.x, vertex.y);
         public abstract VecInt2 GetClosestVertex(Vector2 cartesianCoods);
+        public abstract int GetManhattanDistance(VecInt2 a, VecInt2 b);
+        public abstract VecInt2[] GetLinePoints(VecInt2 a, VecInt2 b);
     }
 
     internal class SquareLattice : Lattice
@@ -31,6 +34,21 @@ namespace LatticeProject
             if (coords.Y < 0) coords.Y--;
             return new VecInt2((int)(coords.X + 0.5f), (int)(coords.Y + 0.5f));
         }
+
+        public override int GetManhattanDistance(VecInt2 a, VecInt2 b)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override VecInt2[] GetLinePoints(VecInt2 a, VecInt2 b)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsValidDirection(VecInt2 a, VecInt2 b)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     internal class HexagonLattice : Lattice
@@ -38,6 +56,7 @@ namespace LatticeProject
         public const float sqrt3 = 1.73205080757f;
         public const float sqrt3_2 = 0.86602540378f;
         public const float sqrt3_3 = 0.57735026919f;
+        public readonly Vector2 epsilon = new Vector2(1e-3f, 1e-3f);
 
         private static readonly VecInt2[] nOffsets =
         {
@@ -49,6 +68,12 @@ namespace LatticeProject
             new VecInt2(0, 1),
         };
         public override VecInt2[] GetNeighbourOffsets() => nOffsets;
+
+        public override bool IsValidDirection(VecInt2 a, VecInt2 b)
+        {
+            VecInt2 difference = a - b;
+            return difference.x == 0 || difference.y == 0 || difference.x == -difference.y;
+        }
 
         public override Vector2 GetCartesianCoords(int x, int y)
         {
@@ -74,6 +99,37 @@ namespace LatticeProject
             int r = (int)Math.Floor(rf);        // pseudo y, quantized and thus requires floor
 
             return new VecInt2(q - r, r);
+        }
+
+        public override int GetManhattanDistance(VecInt2 a, VecInt2 b)
+        {
+            int dq = Math.Abs(a.x - b.x);
+            int dr = Math.Abs(a.y - b.y);
+
+            int sa = -a.x - a.y;
+            int sb = -b.x - b.y;
+
+            int ds = Math.Abs(sa - sb);
+
+            return Math.Max(dq, Math.Max(dr, ds));
+        }
+
+        public override VecInt2[] GetLinePoints(VecInt2 a, VecInt2 b)
+        {
+            int distance = GetManhattanDistance(a, b);
+
+            Vector2 position = GetCartesianCoords(a);
+            Vector2 step = (GetCartesianCoords(b) - position) / distance;
+
+            VecInt2[] points = new VecInt2[distance + 1];
+            for (int i = 0; i < distance; i++)
+            {
+                points[i] = GetClosestVertex(position + epsilon);
+                position += step;
+            }
+            points[^1] = GetClosestVertex(position);
+
+            return points;
         }
     }
 }

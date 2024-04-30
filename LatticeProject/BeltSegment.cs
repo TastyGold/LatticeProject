@@ -1,12 +1,15 @@
-﻿using Raylib_cs;
-using System.Numerics;
-using static LatticeProject.LatticeRenderer;
+﻿using System.Numerics;
 
 namespace LatticeProject
 {
     internal class BeltSegment
     {
+        public BeltInventory inventory = new BeltInventory();
+
         public List<VecInt2> vertices = new List<VecInt2>();
+        public List<int> pieceLengths = new List<int>();
+        private int totalLength = 0;
+        public int TotalLength => totalLength;
 
         public void SimplifyVertices()
         {
@@ -24,7 +27,33 @@ namespace LatticeProject
             }
         }
 
-        public VecInt2 GetDirection(VecInt2 start, VecInt2 end)
+        public void FixInvalidPieces(Lattice lattice)
+        {
+            //for (int i = 1; i < vertices.Count; i++)
+            //{
+            //    if (!lattice.IsValidDirection(vertices[i - 1], vertices[i]))
+            //    {
+            //        vertices.Insert(i - 1, new VecInt2(vertices[i - 1].x, vertices[i].y));
+            //        i++;
+            //    }
+            //}
+
+            throw new NotImplementedException(TotalLength.ToString());
+        }
+
+        public void UpdateLengths(Lattice lattice)
+        {
+            pieceLengths.Clear();
+            totalLength = 0;
+            for (int i = 1; i < vertices.Count; i++)
+            {
+                int distance = lattice.GetManhattanDistance(vertices[i], vertices[i - 1]);
+                pieceLengths.Add(distance);
+                totalLength += distance;
+            }
+        }
+
+        public static VecInt2 GetDirection(VecInt2 start, VecInt2 end)
         {
             VecInt2 dv = end - start;
             if (dv.x == 0 && dv.y == 0) return VecInt2.Zero;
@@ -33,63 +62,50 @@ namespace LatticeProject
             if (dv.x == -dv.y) return new VecInt2(dv.x / dv.x, dv.y / dv.y);
             else return dv;
         }
-    }
 
-    internal class LatticeChunk
-    {
-        public List<BeltSegment> beltSegments = new List<BeltSegment>();
-    }
-
-    internal static class LatticeChunkRenderer
-    {
-        public static void DrawAllBeltSegments(Lattice lattice, LatticeChunk chunk)
+        public Vector2 GetPositionAlongBelt(Lattice lattice, float value, bool fromEnd)
         {
-            for (int j = 0; j < 2; j++)
+            if (fromEnd) value = TotalLength - value;
+
+            if (value <= 0) return lattice.GetCartesianCoords(vertices[0]);
+
+            int vertex = 0;
+            while (vertex < pieceLengths.Count && value > pieceLengths[vertex])
             {
-                for (int i = 0; i < chunk.beltSegments.Count; i++)
-                {
-                    BeltRenderer.DrawBeltSegment(lattice, chunk.beltSegments[i], j == 0, i);
-                }
+                value -= pieceLengths[vertex];
+                vertex++;
             }
+
+            if (vertex >= vertices.Count - 1)
+            {
+                return lattice.GetCartesianCoords(vertices[^1]);
+            }
+
+            value /= pieceLengths[vertex];
+
+            return Vector2.Lerp(lattice.GetCartesianCoords(vertices[vertex]), lattice.GetCartesianCoords(vertices[vertex + 1]), value);
         }
     }
 
-    internal static class BeltRenderer
+    internal class BeltInventory
     {
-        private static Color beltColor = new Color(33, 38, 45, 255);
-        private static Color beltOutlineColor = new Color(48, 54, 61, 255);
-        public static float beltOutlineWidth = 0.1f;
-        public static float beltWidth = 0.5f;
+        public List<GameItem> items = new List<GameItem>(); // ordered from end of conveyor to start
 
-        public static void DrawBeltSegment(Lattice lattice, BeltSegment segment, bool outline, int colorIndex)
+        public List<float> interItemDistances = new List<float>();
+
+        public const float minItemDistance = 1;
+
+        public int firstNonZeroDistanceIdx = 0;
+
+        public void AddItem(float distance)
         {
-            for (int i = 0; i < segment.vertices.Count - 1; i++)
-            {
-                Vector2 start = lattice.GetCartesianCoords(segment.vertices[i]);
-                Vector2 end = lattice.GetCartesianCoords(segment.vertices[i + 1]);
-
-                float width = !outline ? scale * beltWidth : scale * (beltWidth + beltOutlineWidth);
-                Color col = outline ? beltOutlineColor : Colors.colors[i % Colors.numColors];
-
-                Raylib.DrawLineEx(start * scale, end * scale, width, col);
-                Raylib.DrawCircleV(start * scale, width / 2, col);
-
-                if (i == segment.vertices.Count - 2)
-                {
-                    Raylib.DrawCircleV(end * scale, width / 2, col);
-                }
-            }
+            interItemDistances.Add(distance);
+            items.Add(new GameItem());
         }
     }
 
-    internal static class Colors
+    internal struct GameItem
     {
-        public const int numColors = 21;
-        public static Color[] colors =
-        {
-            Color.DarkGray, Color.Maroon, Color.Orange, Color.DarkGreen, Color.DarkBlue, Color.DarkPurple, Color.DarkBrown,
-            Color.Gray, Color.Red, Color.Gold, Color.Lime, Color.Blue, Color.Violet, Color.Brown,
-            Color.LightGray, Color.Pink, Color.Yellow, Color.Green, Color.SkyBlue, Color.Purple, Color.Beige
-        };
+        public int id;
     }
 }

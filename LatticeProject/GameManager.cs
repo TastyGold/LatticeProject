@@ -12,6 +12,8 @@ namespace LatticeProject
         static Vector2 mousePosition = new Vector2();
         static VecInt2 lastClosestVertex = VecInt2.Zero;
         static VecInt2 closestVertex = VecInt2.Zero;
+        static VecInt2[] linePoints = new VecInt2[0];
+        static BeltInventory lastBeltInv = new BeltInventory();
 
         public static void Begin()
         {
@@ -27,6 +29,8 @@ namespace LatticeProject
             mousePosition = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), mainCam.camera);
             closestVertex = mainLattice.GetClosestVertex(mousePosition / LatticeRenderer.scale);
 
+            //linePoints = mainLattice.GetLinePoints(VecInt2.Zero, closestVertex);
+
             if (Raylib.IsMouseButtonPressed(0))
             {
                 mainChunk.beltSegments.Add(new BeltSegment());
@@ -41,11 +45,27 @@ namespace LatticeProject
             if (Raylib.IsMouseButtonReleased(0))
             {
                 mainChunk.beltSegments[^1].SimplifyVertices();
+                mainChunk.beltSegments[^1].UpdateLengths(mainLattice);
+                for (int i = 0; i < 10; i++)
+                {
+                    mainChunk.beltSegments[^1].inventory.AddItem(0.66f);
+                }
+                lastBeltInv = mainChunk.beltSegments[^1].inventory;
+            }
+
+            if (Raylib.IsKeyDown(KeyboardKey.J))
+            {
+                lastBeltInv.interItemDistances[0] -= Raylib.GetFrameTime() * 4;
+            }
+            if (Raylib.IsKeyDown(KeyboardKey.K))
+            {
+                lastBeltInv.interItemDistances[0] += Raylib.GetFrameTime() * 4;
             }
 
             mainCam.UpdateCamera();
 
             Console.WriteLine(closestVertex.ToString());
+            //Console.WriteLine("Manhattan Distance = " + mainLattice.GetManhattanDistance(VecInt2.Zero, closestVertex));
 
             if (Raylib.IsKeyPressed(KeyboardKey.P))
             {
@@ -90,6 +110,10 @@ namespace LatticeProject
             //BeltRenderer.DrawBeltSegments(mainLattice, objManager);
             LatticeChunkRenderer.DrawAllBeltSegments(mainLattice, mainChunk);
             Raylib.DrawCircleV(mainLattice.GetCartesianCoords(closestVertex.x, closestVertex.y) * LatticeRenderer.scale, LatticeRenderer.scale / 4, Color.DarkGray);
+            for (int i = 0; i < linePoints.Length; i++)
+            {
+                Raylib.DrawCircleV(mainLattice.GetCartesianCoords(linePoints[i].x, linePoints[i].y) * LatticeRenderer.scale, LatticeRenderer.scale / 4, Color.Blue);
+            }
             LatticeRenderer.HighlightNeighbours(mainLattice, closestVertex);
 
             Raylib.EndMode2D();
