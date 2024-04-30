@@ -56,36 +56,24 @@ namespace LatticeProject
         }
         public override VecInt2 GetClosestVertex(Vector2 coords)
         {
-            Vector2 mousePos = coords;
+            double x = coords.X;
+            double y = coords.Y;
 
-            //initial guess point
-            coords.Y /= sqrt3_2;
-            coords.X = (float)Math.Round(coords.X);
-            coords.Y = (float)Math.Round(coords.Y);
+            //Algorithm used:
+            //https://www.redblobgames.com/grids/hexagons/more-pixel-to-hex.html#chris-cox
 
-            coords.X -= coords.Y / 2;
+            double t = sqrt3 * y + 1;           // scaled y, plus phase
+            double temp1 = Math.Floor(t + x);   // (y+x) diagonal, this calc needs floor
+            double temp2 = t - x;               // (y-x) diagonal, no floor needed
+            double temp3 = 2 * x + 1;           // scaled horizontal, no floor needed, needs +1 to get correct phase
 
-            int y = (int)coords.Y;
-            int x = (int)coords.X;
+            double qf = (temp1 + temp3) / 3.0;  // pseudo x with fraction
+            double rf = (temp1 + temp2) / 3.0;  // pseudo y with fraction
 
-            VecInt2 initial = new VecInt2(x, y);
+            int q = (int)Math.Floor(qf);        // pseudo x, quantized and thus requires floor
+            int r = (int)Math.Floor(rf);        // pseudo y, quantized and thus requires floor
 
-            //check for closer neighbour
-            Vector2 coordsInitial = GetCartesianCoords(initial.x, initial.y);
-            float minDist = Vector2.DistanceSquared(mousePos, coordsInitial);
-            int minDistIndex = -1;
-            for (int i = 0; i < nOffsets.Length; i++)
-            {
-                float dist = Vector2.DistanceSquared(mousePos, GetCartesianCoords(initial.x + nOffsets[i].x, initial.y + nOffsets[i].y));
-                if (dist < minDist)
-                {
-                    minDistIndex = i;
-                    minDist = dist;
-                }
-            }
-
-            if (minDistIndex == -1) return initial;
-            else return initial + nOffsets[minDistIndex];
+            return new VecInt2(q - r, r);
         }
     }
 }
