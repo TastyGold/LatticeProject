@@ -1,13 +1,11 @@
-﻿namespace LatticeProject
-{
-    internal class LatticeChunk
-    {
-        public List<BeltSegment> beltSegments = new List<BeltSegment>();
-    }
+﻿using LatticeProject.Game;
+using LatticeProject.Lattices;
 
-    internal static class LatticeChunkRenderer
+namespace LatticeProject.Rendering
+{
+    internal static class WorldChunkRenderer
     {
-        public static void DrawAllBeltSegments(Lattice lattice, LatticeChunk chunk)
+        public static void DrawAllBeltSegments(Lattice lattice, WorldChunk chunk)
         {
             for (int j = 0; j < 2; j++)
             {

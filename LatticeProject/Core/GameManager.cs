@@ -1,13 +1,17 @@
-﻿using Raylib_cs;
+﻿using LatticeProject.Game;
+using LatticeProject.Lattices;
+using LatticeProject.Rendering;
+using LatticeProject.Utility;
+using Raylib_cs;
 using System.Numerics;
 
-namespace LatticeProject
+namespace LatticeProject.Core
 {
     internal static class GameManager
     {
         //static Lattice mainLattice = new SquareLattice();
         static Lattice mainLattice = new HexagonLattice();
-        static LatticeChunk mainChunk = new LatticeChunk();
+        static WorldChunk mainChunk = new WorldChunk();
         static LatticeCamera mainCam = new LatticeCamera(Vector2.Zero, 1, 0, new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2));
         static Vector2 mousePosition = new Vector2();
         static VecInt2 lastClosestVertex = VecInt2.Zero;
@@ -104,16 +108,12 @@ namespace LatticeProject
 
             Raylib.BeginMode2D(mainCam.camera);
 
-            //Raylib.DrawLineV(mainLattice.GetCartesianCoords(closestVertex.x, closestVertex.y) * LatticeRenderer.scale, mousePosition, Color.Blue);
-            //LatticeRenderer.DrawVertices(mainLattice, 0, 0, 15, 15);
             LatticeRenderer.DrawHexagonalGrid(mainLattice, 2 / mainCam.Zoom, 0, 0, 15, 15);
-            //BeltRenderer.DrawBeltSegments(mainLattice, objManager);
-            LatticeChunkRenderer.DrawAllBeltSegments(mainLattice, mainChunk);
-            Raylib.DrawCircleV(mainLattice.GetCartesianCoords(closestVertex.x, closestVertex.y) * LatticeRenderer.scale, LatticeRenderer.scale / 4, Color.DarkGray);
-            for (int i = 0; i < linePoints.Length; i++)
-            {
-                Raylib.DrawCircleV(mainLattice.GetCartesianCoords(linePoints[i].x, linePoints[i].y) * LatticeRenderer.scale, LatticeRenderer.scale / 4, Color.Blue);
-            }
+
+            WorldChunkRenderer.DrawAllBeltSegments(mainLattice, mainChunk);
+
+            LatticeRenderer.DrawVertex(mainLattice, closestVertex, 0.25f, Color.DarkGray);
+            LatticeRenderer.DrawVertices(mainLattice, linePoints, 0.25f, Color.Blue);
             LatticeRenderer.HighlightNeighbours(mainLattice, closestVertex);
 
             Raylib.EndMode2D();

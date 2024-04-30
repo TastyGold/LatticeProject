@@ -1,7 +1,8 @@
-﻿using Raylib_cs;
+﻿using LatticeProject.Utility;
+using Raylib_cs;
 using System.Numerics;
 
-namespace LatticeProject
+namespace LatticeProject.Core
 {
     public class LatticeCamera
     {

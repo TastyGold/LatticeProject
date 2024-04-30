@@ -1,6 +1,6 @@
 ﻿using Raylib_cs;
 
-namespace LatticeProject
+namespace LatticeProject.Rendering
 {
     internal static class Colors
     {

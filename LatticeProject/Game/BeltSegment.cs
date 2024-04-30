@@ -1,6 +1,8 @@
-﻿using System.Numerics;
+﻿using LatticeProject.Lattices;
+using LatticeProject.Utility;
+using System.Numerics;
 
-namespace LatticeProject
+namespace LatticeProject.Game
 {
     internal class BeltSegment
     {
@@ -85,27 +87,5 @@ namespace LatticeProject
 
             return Vector2.Lerp(lattice.GetCartesianCoords(vertices[vertex]), lattice.GetCartesianCoords(vertices[vertex + 1]), value);
         }
-    }
-
-    internal class BeltInventory
-    {
-        public List<GameItem> items = new List<GameItem>(); // ordered from end of conveyor to start
-
-        public List<float> interItemDistances = new List<float>();
-
-        public const float minItemDistance = 1;
-
-        public int firstNonZeroDistanceIdx = 0;
-
-        public void AddItem(float distance)
-        {
-            interItemDistances.Add(distance);
-            items.Add(new GameItem());
-        }
-    }
-
-    internal struct GameItem
-    {
-        public int id;
     }
 }

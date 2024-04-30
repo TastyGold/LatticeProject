@@ -1,4 +1,4 @@
-﻿namespace LatticeProject
+﻿namespace LatticeProject.Utility
 {
     internal struct VecInt2
     {
@@ -46,7 +46,7 @@
             return $"<{x}, {y}>";
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is VecInt2 @int &&
                    x == @int.x &&

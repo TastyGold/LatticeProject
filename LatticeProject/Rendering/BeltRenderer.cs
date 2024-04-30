@@ -1,8 +1,10 @@
-﻿using Raylib_cs;
+﻿using LatticeProject.Game;
+using LatticeProject.Lattices;
+using Raylib_cs;
 using System.Numerics;
-using static LatticeProject.LatticeRenderer;
+using static LatticeProject.Rendering.LatticeRenderer;
 
-namespace LatticeProject
+namespace LatticeProject.Rendering
 {
     internal static class BeltRenderer
     {
@@ -19,7 +21,7 @@ namespace LatticeProject
                 Vector2 end = lattice.GetCartesianCoords(segment.vertices[i + 1]);
 
                 float width = !outline ? scale * beltWidth : scale * (beltWidth + beltOutlineWidth);
-                Color col = outline ? beltOutlineColor :  Colors.colors[i % Colors.numColors];
+                Color col = outline ? beltOutlineColor : Colors.colors[i % Colors.numColors];
 
                 Raylib.DrawLineEx(start * scale, end * scale, width, col);
                 Raylib.DrawCircleV(start * scale, width / 2, col);
@@ -37,7 +39,7 @@ namespace LatticeProject
             for (int i = 0; i < segment.inventory.items.Count; i++)
             {
                 beltPosition += segment.inventory.interItemDistances[i];
-                Raylib.DrawCircleV(scale * segment.GetPositionAlongBelt(lattice, beltPosition, fromEnd: false), scale / 5, Color.Maroon);
+                Raylib.DrawCircleV(scale * segment.GetPositionAlongBelt(lattice, beltPosition, fromEnd: true), scale / 5, Color.Maroon);
             }
         }
     }

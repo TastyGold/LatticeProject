@@ -1,7 +1,7 @@
 ﻿using Raylib_cs;
 using System.Numerics;
 
-namespace LatticeProject
+namespace LatticeProject.Core
 {
     internal class Program
     {
