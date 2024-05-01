@@ -74,14 +74,15 @@ namespace LatticeProject.Core
 
             Raylib.BeginMode2D(mainCam.camera);
 
-            LatticeRenderer.DrawHexagonalGrid(mainLattice, 2 / mainCam.Zoom, 0, 0, 15, 15);
+            //LatticeRenderer.DrawHexagonalGrid(mainLattice, 2 / mainCam.Zoom, -16, -16, 15, 15);
+            LatticeRenderer.DrawHexagonalGrid(mainLattice, mainCam.Target, mainCam.Zoom);
 
             WorldChunkRenderer.DrawAllBeltSegments(mainLattice, mainChunk);
 
-            LatticeRenderer.DrawVertex(mainLattice, closestVertex, 0.25f, Color.DarkGray);
-            BuildingRenderer.DrawBuilding(mainLattice, new Building() { Position = closestVertex }, Color.Gray);
+            //LatticeRenderer.DrawVertex(mainLattice, closestVertex, 0.25f, Color.DarkGray);
+            //BuildingRenderer.DrawBuilding(mainLattice, new Building() { Position = closestVertex }, Color.Gray);
             LatticeRenderer.DrawVertices(mainLattice, linePoints, 0.25f, Color.Blue);
-            LatticeRenderer.HighlightNeighbours(mainLattice, closestVertex);
+            //LatticeRenderer.HighlightNeighbours(mainLattice, closestVertex);
 
             Raylib.EndMode2D();
 
