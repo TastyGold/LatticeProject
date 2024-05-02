@@ -10,8 +10,11 @@ namespace LatticeProject.Game
 
         public List<VecInt2> vertices = new List<VecInt2>();
         public List<int> pieceLengths = new List<int>();
-        private int totalLength = 0;
-        public int TotalLength => totalLength;
+        public int TotalLength
+        {
+            get => inventory.totalBeltLength;
+            private set => inventory.totalBeltLength = value;
+        }
 
         public void SimplifyVertices()
         {
@@ -46,12 +49,12 @@ namespace LatticeProject.Game
         public void UpdateLengths(Lattice lattice)
         {
             pieceLengths.Clear();
-            totalLength = 0;
+            TotalLength = 0;
             for (int i = 1; i < vertices.Count; i++)
             {
                 int distance = lattice.GetManhattanDistance(vertices[i], vertices[i - 1]);
                 pieceLengths.Add(distance);
-                totalLength += distance;
+                TotalLength += distance;
             }
         }
 
