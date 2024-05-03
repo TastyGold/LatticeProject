@@ -2,6 +2,16 @@
 {
     internal struct GameItem
     {
-        public int id;
+        public int color;
+
+        public GameItem()
+        {
+            color = 0;
+        }
+
+        public GameItem(int color)
+        {
+            this.color = color;
+        }
     }
 }

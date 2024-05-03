@@ -9,15 +9,15 @@ namespace LatticeProject.Core
 {
     internal static class GameManager
     {
-        //static Lattice mainLattice = new SquareLattice();
         static Lattice mainLattice = new HexagonLattice();
         static WorldChunk mainChunk = new WorldChunk();
         static LatticeCamera mainCam = new LatticeCamera(Vector2.Zero, 1, 0, new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2));
+        
         static Vector2 mousePosition = new Vector2();
         static VecInt2 lastClosestVertex = VecInt2.Zero;
         static VecInt2 closestVertex = VecInt2.Zero;
         static VecInt2[] linePoints = new VecInt2[0];
-        static BeltInventory lastBeltInv = new BeltInventory();
+        public static int nextColor = 0;
 
         public static void Begin()
         {
@@ -49,31 +49,21 @@ namespace LatticeProject.Core
             {
                 mainChunk.beltSegments[^1].SimplifyVertices(mainLattice);
                 mainChunk.beltSegments[^1].UpdateLengths(mainLattice);
-                //mainChunk.beltSegments[^1].inventory.AddItem(0);
-                for (int i = 0; i < 10; i++)
-                {
-                    //mainChunk.beltSegments[^1].inventory.AddItem(0);
-                }
-                lastBeltInv = mainChunk.beltSegments[^1].inventory;
             }
 
             if (Raylib.IsKeyPressed(KeyboardKey.I))
             {
-                foreach (BeltSegment b in mainChunk.beltSegments)
-                {
-                    b.inventory.RecieveItem(new GameItem(), 0);
-                }
+                mainChunk.beltSegments.ForEach(b => b.inventory.RecieveItem(new GameItem(nextColor), 0));
+                nextColor++;
+                nextColor %= Colors.numColors;
             }
-
-            mainChunk.Update(Raylib.GetFrameTime());
-
-            if (Raylib.IsKeyDown(KeyboardKey.J)) lastBeltInv.interItemDistances[0] -= Raylib.GetFrameTime() * 4;
-            if (Raylib.IsKeyDown(KeyboardKey.K)) lastBeltInv.interItemDistances[0] += Raylib.GetFrameTime() * 4;
-
-            mainCam.UpdateCamera();
 
             if (Raylib.IsKeyPressed(KeyboardKey.Left)) mainCam.camera.Rotation -= 30;
             if (Raylib.IsKeyPressed(KeyboardKey.Right)) mainCam.camera.Rotation += 30;
+
+            mainChunk.Update(Raylib.GetFrameTime());
+
+            mainCam.UpdateCamera();
         }
 
         public static void Draw()
@@ -84,7 +74,6 @@ namespace LatticeProject.Core
 
             Raylib.BeginMode2D(mainCam.camera);
 
-            //LatticeRenderer.DrawHexagonalGrid(mainLattice, 2 / mainCam.Zoom, -16, -16, 15, 15);
             LatticeRenderer.DrawHexagonalGrid(mainLattice, mainCam.Target, mainCam.Zoom);
 
             WorldChunkRenderer.DrawAllBeltSegments(mainLattice, mainChunk);

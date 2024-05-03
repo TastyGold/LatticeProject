@@ -38,7 +38,9 @@
             trailingBeltDistance -= deltaTime * beltSpeed;
             if (LeadingBeltDistance > minItemDistance)
             {
-                RecieveItem(new GameItem(), LeadingBeltDistance - minItemDistance);
+                RecieveItem(new GameItem(Core.GameManager.nextColor), LeadingBeltDistance - minItemDistance);
+                Core.GameManager.nextColor++;
+                Core.GameManager.nextColor %= Rendering.Colors.numColors;
             }
             Console.WriteLine($"ItemCount: {items.Count}, DistCount: {interItemDistances.Count}");
         }
