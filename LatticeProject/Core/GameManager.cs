@@ -23,7 +23,6 @@ namespace LatticeProject.Core
         {
             Raylib.InitWindow(1600, 900, "Hello World");
             RenderConfig.scale = 150;
-            mainChunk.beltSegments.Add(new BeltSegment());
         }
 
         public static void Update()
@@ -33,7 +32,7 @@ namespace LatticeProject.Core
             mousePosition = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), mainCam.camera);
             closestVertex = mainLattice.GetClosestVertex(mousePosition / RenderConfig.scale);
 
-            linePoints = mainLattice.GetLinePoints(VecInt2.Zero, closestVertex);
+            //linePoints = mainLattice.GetLinePoints(VecInt2.Zero, closestVertex);
 
             if (Raylib.IsMouseButtonPressed(0))
             {
@@ -50,12 +49,23 @@ namespace LatticeProject.Core
             {
                 mainChunk.beltSegments[^1].SimplifyVertices(mainLattice);
                 mainChunk.beltSegments[^1].UpdateLengths(mainLattice);
+                //mainChunk.beltSegments[^1].inventory.AddItem(0);
                 for (int i = 0; i < 10; i++)
                 {
-                    mainChunk.beltSegments[^1].inventory.AddItem(0.66f);
+                    //mainChunk.beltSegments[^1].inventory.AddItem(0);
                 }
                 lastBeltInv = mainChunk.beltSegments[^1].inventory;
             }
+
+            if (Raylib.IsKeyPressed(KeyboardKey.I))
+            {
+                foreach (BeltSegment b in mainChunk.beltSegments)
+                {
+                    b.inventory.RecieveItem(new GameItem(), 0);
+                }
+            }
+
+            mainChunk.Update(Raylib.GetFrameTime());
 
             if (Raylib.IsKeyDown(KeyboardKey.J)) lastBeltInv.interItemDistances[0] -= Raylib.GetFrameTime() * 4;
             if (Raylib.IsKeyDown(KeyboardKey.K)) lastBeltInv.interItemDistances[0] += Raylib.GetFrameTime() * 4;

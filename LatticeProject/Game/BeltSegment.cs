@@ -28,10 +28,7 @@ namespace LatticeProject.Game
                 {
                     vertices.RemoveAt(i - 1);
                 }
-                else
-                {
-                    i++;
-                }
+                else i++;
             }
         }
 

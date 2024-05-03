@@ -21,7 +21,7 @@ namespace LatticeProject.Rendering
                 Vector2 end = lattice.GetCartesianCoords(segment.vertices[i + 1]);
 
                 float width = !outline ? scale * beltWidth : scale * (beltWidth + beltOutlineWidth);
-                Color col = outline ? beltOutlineColor : /*beltColor; */ Colors.colors[i % Colors.numColors];
+                Color col = outline ? beltOutlineColor : beltColor; // Colors.colors[i % Colors.numColors];
 
                 Raylib.DrawLineEx(start * scale, end * scale, width, col);
                 Raylib.DrawCircleV(start * scale, width / 2, col);
@@ -36,10 +36,11 @@ namespace LatticeProject.Rendering
         public static void DrawBeltItems(Lattice lattice, BeltSegment segment)
         {
             float beltPosition = 0;
+
             for (int i = 0; i < segment.inventory.items.Count; i++)
             {
                 beltPosition += segment.inventory.interItemDistances[i];
-                Raylib.DrawCircleV(scale * segment.GetPositionAlongBelt(lattice, beltPosition, fromEnd: true), scale / 5, Color.Maroon);
+                Raylib.DrawCircleV(scale * segment.GetPositionAlongBelt(lattice, beltPosition, fromEnd: false), scale / 5, Color.Maroon);
             }
         }
     }
