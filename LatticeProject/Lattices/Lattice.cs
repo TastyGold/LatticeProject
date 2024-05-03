@@ -12,5 +12,6 @@ namespace LatticeProject.Lattices
         public abstract VecInt2 GetClosestVertex(Vector2 cartesianCoods);
         public abstract int GetManhattanDistance(VecInt2 a, VecInt2 b);
         public abstract VecInt2[] GetLinePoints(VecInt2 a, VecInt2 b);
+        public abstract int GetDirectionIndex(VecInt2 a, VecInt2 b);
     }
 }

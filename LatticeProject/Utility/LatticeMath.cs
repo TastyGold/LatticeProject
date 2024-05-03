@@ -11,12 +11,12 @@ namespace LatticeProject.Utility
 
         public static readonly VecInt2[] hexNeighbours =
         {
-            new VecInt2(0, -1),
-            new VecInt2(1, -1),
-            new VecInt2(-1, 0),
-            new VecInt2(1, 0),
-            new VecInt2(-1, 1),
-            new VecInt2(0, 1),
+            new VecInt2(1, 0),  //right
+            new VecInt2(0, 1),  //down right
+            new VecInt2(-1, 1), //down left
+            new VecInt2(-1, 0), //left
+            new VecInt2(0, -1), //up left
+            new VecInt2(1, -1), //up right
         };
 
         public static int Modulo(int value, int mod)

@@ -15,6 +15,18 @@ namespace LatticeProject.Lattices
             return difference.x == 0 || difference.y == 0 || difference.x == -difference.y;
         }
 
+        public override int GetDirectionIndex(VecInt2 a, VecInt2 b)
+        {
+            VecInt2 dv = b - a;
+
+            if (dv == VecInt2.Zero) return -1;
+            else if (dv.y == 0) dv.x = Math.Sign(dv.x);
+            else if (dv.x == 0) dv.y = Math.Sign(dv.y);
+            else if (dv.x == -dv.y) dv = new VecInt2(Math.Sign(dv.x), Math.Sign(dv.y));
+
+            return Array.IndexOf(nOffsets, dv);
+        }
+
         public override Vector2 GetCartesianCoords(int x, int y)
         {
             return new Vector2(x + y / 2f, y * sqrt3_2);

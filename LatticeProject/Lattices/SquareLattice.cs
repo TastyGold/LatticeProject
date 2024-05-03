@@ -13,6 +13,14 @@ namespace LatticeProject.Lattices
             new VecInt2(0, -1),
         };
         public override VecInt2[] GetNeighbourOffsets() => nOffsets;
+        public override int GetDirectionIndex(VecInt2 a, VecInt2 b)
+        {
+            VecInt2 dv = b - a;
+            if (dv.y == 0) dv.x /= dv.x;
+            if (dv.x == 0) dv.y /= dv.y;
+
+            return Array.IndexOf(nOffsets, dv);
+        }
 
         public override Vector2 GetCartesianCoords(int x, int y)
         {

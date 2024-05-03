@@ -33,7 +33,7 @@ namespace LatticeProject.Core
             mousePosition = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), mainCam.camera);
             closestVertex = mainLattice.GetClosestVertex(mousePosition / RenderConfig.scale);
 
-            //linePoints = mainLattice.GetLinePoints(VecInt2.Zero, closestVertex);
+            linePoints = mainLattice.GetLinePoints(VecInt2.Zero, closestVertex);
 
             if (Raylib.IsMouseButtonPressed(0))
             {
@@ -48,7 +48,7 @@ namespace LatticeProject.Core
 
             if (Raylib.IsMouseButtonReleased(0))
             {
-                mainChunk.beltSegments[^1].SimplifyVertices();
+                mainChunk.beltSegments[^1].SimplifyVertices(mainLattice);
                 mainChunk.beltSegments[^1].UpdateLengths(mainLattice);
                 for (int i = 0; i < 10; i++)
                 {
@@ -79,10 +79,10 @@ namespace LatticeProject.Core
 
             WorldChunkRenderer.DrawAllBeltSegments(mainLattice, mainChunk);
 
-            //LatticeRenderer.DrawVertex(mainLattice, closestVertex, 0.25f, Color.DarkGray);
+            LatticeRenderer.DrawVertex(mainLattice, closestVertex, 0.25f, Color.DarkGray);
             //BuildingRenderer.DrawBuilding(mainLattice, new Building() { Position = closestVertex }, Color.Gray);
             LatticeRenderer.DrawVertices(mainLattice, linePoints, 0.25f, Color.Blue);
-            //LatticeRenderer.HighlightNeighbours(mainLattice, closestVertex);
+            LatticeRenderer.HighlightNeighbours(mainLattice, closestVertex);
 
             Raylib.EndMode2D();
 

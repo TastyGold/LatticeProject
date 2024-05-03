@@ -16,12 +16,15 @@ namespace LatticeProject.Game
             private set => inventory.totalBeltLength = value;
         }
 
-        public void SimplifyVertices()
+        public void SimplifyVertices(Lattice lattice)
         {
             int i = 2;
             while (i < vertices.Count)
             {
-                if (GetDirection(vertices[i - 1], vertices[i]) == GetDirection(vertices[i - 2], vertices[i - 1]))
+                int dir1 = lattice.GetDirectionIndex(vertices[i - 1], vertices[i]);
+                int dir2 = lattice.GetDirectionIndex(vertices[i - 2], vertices[i - 1]);
+
+                if (dir1 >= 0 && dir1 == dir2)
                 {
                     vertices.RemoveAt(i - 1);
                 }
@@ -56,16 +59,6 @@ namespace LatticeProject.Game
                 pieceLengths.Add(distance);
                 TotalLength += distance;
             }
-        }
-
-        public static VecInt2 GetDirection(VecInt2 start, VecInt2 end)
-        {
-            VecInt2 dv = end - start;
-            if (dv.x == 0 && dv.y == 0) return VecInt2.Zero;
-            if (dv.x == 0) return new VecInt2(0, dv.y / dv.y);
-            if (dv.y == 0) return new VecInt2(dv.x / dv.x, 0);
-            if (dv.x == -dv.y) return new VecInt2(dv.x / dv.x, dv.y / dv.y);
-            else return dv;
         }
 
         public Vector2 GetPositionAlongBelt(Lattice lattice, float value, bool fromEnd)
