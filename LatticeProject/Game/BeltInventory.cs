@@ -20,8 +20,8 @@
                 if (interItemDistances.Count > 0) interItemDistances[0] = value;
                 else return;
             }
-        } //uses the first element of interItemDistances
-        public float trailingBeltDistance = 0;
+        } //uses the first element of interItemDistances (distance from the start of the belt to first item)
+        public float trailingBeltDistance = 0; //distance from the last item to the end of the belt
 
         public const float minItemDistance = 2/3f;
         public int lastNonZeroDistanceIdx = 0;
@@ -38,11 +38,9 @@
             trailingBeltDistance -= deltaTime * beltSpeed;
             if (LeadingBeltDistance > minItemDistance)
             {
-                RecieveItem(new GameItem(Core.GameManager.nextColor), LeadingBeltDistance - minItemDistance);
-                Core.GameManager.nextColor++;
-                Core.GameManager.nextColor %= Rendering.Colors.numColors;
+                RecieveItem(new GameItem(0), LeadingBeltDistance - minItemDistance);
             }
-            Console.WriteLine($"ItemCount: {items.Count}, DistCount: {interItemDistances.Count}");
+            //Console.WriteLine($"ItemCount: {items.Count}, DistCount: {interItemDistances.Count}");
         }
 
         public override bool CanRecieveItem(GameItem item)
