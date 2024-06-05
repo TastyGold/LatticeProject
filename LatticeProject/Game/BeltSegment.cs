@@ -6,14 +6,15 @@ namespace LatticeProject.Game
 {
     internal class BeltSegment
     {
-        public BeltInventory inventory = new BeltInventory();
+        public OldBeltInventory inventory = new OldBeltInventory();
+        public BeltInventoryManager inventoryManager = new BeltInventoryManager();
 
         public List<VecInt2> vertices = new List<VecInt2>();
         public List<int> pieceLengths = new List<int>();
         public int TotalLength
         {
-            get => inventory.totalBeltLength;
-            private set => inventory.totalBeltLength = value;
+            get => inventoryManager.TotalBeltLength;
+            private set => inventoryManager.TotalBeltLength = value;
         }
 
         public void SimplifyVertices(Lattice lattice)
@@ -78,7 +79,27 @@ namespace LatticeProject.Game
 
             value /= pieceLengths[vertex];
 
-            return Vector2.Lerp(lattice.GetCartesianCoords(vertices[vertex]), lattice.GetCartesianCoords(vertices[vertex + 1]), value);
+            return Vector2.Lerp(
+                lattice.GetCartesianCoords(vertices[vertex]), 
+                lattice.GetCartesianCoords(vertices[vertex + 1]), 
+                value);
+        }
+
+        public Vector2 GetPositionAlongPiece(Lattice lattice, int pieceIndex, float distance)
+        {
+            if (pieceIndex >= pieceLengths.Count) return lattice.GetCartesianCoords(vertices[^1]);
+
+            float value = distance / pieceLengths[pieceIndex];
+
+            return Vector2.Lerp(
+                lattice.GetCartesianCoords(vertices[pieceIndex]),
+                lattice.GetCartesianCoords(vertices[pieceIndex + 1]),
+                value);
+        }
+
+        public BeltTraverser GetTraverser()
+        {
+            return new BeltTraverser(this);
         }
     }
 }

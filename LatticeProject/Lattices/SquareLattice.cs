@@ -35,7 +35,7 @@ namespace LatticeProject.Lattices
 
         public override int GetManhattanDistance(VecInt2 a, VecInt2 b)
         {
-            throw new NotImplementedException();
+            return Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
         }
 
         public override VecInt2[] GetLinePoints(VecInt2 a, VecInt2 b)
