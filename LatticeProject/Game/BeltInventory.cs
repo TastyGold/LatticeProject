@@ -152,6 +152,8 @@ namespace LatticeProject.Game
             LeadingDistance += distance - remainingDistance;
         }
 
+        /// <summary>Attempts to combine the counts of two RLE elements if they have the same id and distance.</summary>
+        /// <returns>The node.next that comes after the combined element</returns>
         public LinkedListNode<BeltInventoryElement>? TryCombineNodeWithPrevious(LinkedListNode<BeltInventoryElement> node)
         {
             LinkedListNode<BeltInventoryElement>? output = node;
