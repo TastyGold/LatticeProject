@@ -4,7 +4,6 @@
     {
         public static void RunTests()
         {
-            return;
             Console.WriteLine("Running BeltInventory tests:\n");
 
             BeltInventory inv = new BeltInventory();

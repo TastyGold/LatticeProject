@@ -51,13 +51,6 @@ namespace LatticeProject.Core
                 mainChunk.beltSegments[^1].UpdateLengths(mainLattice);
             }
 
-            if (Raylib.IsKeyPressed(KeyboardKey.I))
-            {
-                mainChunk.beltSegments.ForEach(b => b.inventory.RecieveItem(new GameItem(nextColor), 0));
-                nextColor++;
-                nextColor %= Colors.numColors;
-            }
-
             if (Raylib.IsKeyPressed(KeyboardKey.Left)) mainCam.camera.Rotation -= 30;
             if (Raylib.IsKeyPressed(KeyboardKey.Right)) mainCam.camera.Rotation += 30;
 

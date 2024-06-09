@@ -8,9 +8,6 @@ namespace LatticeProject.Core
     {
         public static void Main()
         {
-            BeltInventoryTests.RunTests();
-            //Console.ReadLine();
-
             GameManager.Begin();
 
             while (!Raylib.WindowShouldClose())

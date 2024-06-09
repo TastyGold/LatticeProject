@@ -112,35 +112,43 @@ namespace LatticeProject.Game
         {
             float remainingDistance = distance;
 
+            //terminates when all remainingDistance has been used OR when all items are stationary
             while (remainingDistance > 0 && ItemToMove is not null)
             {
-                if (ItemToMove.Value.distance <= minItemDistance) //if item to move is already minItemDistance
+                if (ItemToMove.Value.distance <= minItemDistance) //if ItemToMove is already minItemDistance
                 {
+                    //try to combine element with previous and move on to next element
                     ItemToMove.Value.distance = minItemDistance;
                     ItemToMove = TryCombineNodeWithPrevious(ItemToMove);
                 }
                 else
                 {
-                    if (ItemToMove.Value.count > 1 && ItemToMove.Value.distance > minItemDistance)
+                    if (ItemToMove.Value.count > 1) //if element has more than one item
                     {
+                        //separate the first item in the element to be the ItemToMove
                         ItemToMove = SeparateFirstItemFromElement(ItemToMove);
                     }
 
+                    //if remaining distance is greater than that which can be subtracted from the current ItemToMove
                     if (remainingDistance > ItemToMove.Value.distance - minItemDistance)
                     {
+                        //move ItemToMove to minItemDistance
                         remainingDistance -= ItemToMove.Value.distance - minItemDistance;
                         ItemToMove.Value.distance = minItemDistance;
 
+                        //and try to combine with previous RLE chunk
                         ItemToMove = TryCombineNodeWithPrevious(ItemToMove);
                     }
                     else
                     {
+                        //move ItemToMove the remainingDistance and complete execution
                         ItemToMove.Value.distance -= remainingDistance;
                         remainingDistance = 0;
                     }
                 }
             }
 
+            //updates leading distance based on how much the items on the belt moved
             LeadingDistance += distance - remainingDistance;
         }
 
