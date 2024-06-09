@@ -7,7 +7,7 @@ namespace LatticeProject.Game
     internal class BeltSegment
     {
         public OldBeltInventory inventory = new OldBeltInventory();
-        public BeltInventoryManagerNew inventoryManager = new BeltInventoryManagerNew();
+        public BeltInventoryManager inventoryManager = new BeltInventoryManager();
 
         public List<VecInt2> vertices = new List<VecInt2>();
         public List<int> pieceLengths = new List<int>();

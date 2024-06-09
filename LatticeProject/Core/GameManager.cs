@@ -88,7 +88,7 @@ namespace LatticeProject.Core
             Raylib.DrawFPS(10, 10);
             if (mainChunk.beltSegments.Count > 0)
             {
-                BeltInventoryNew inv = mainChunk.beltSegments[^1].inventoryManager.inventory;
+                BeltInventory inv = mainChunk.beltSegments[^1].inventoryManager.inventory;
                 Raylib.DrawText(inv.TotalBeltLength.ToString(), 10, 30, 20, Color.Purple);
                 Raylib.DrawText(inv.Count.ToString(), 10, 50, 20, Color.Blue);
                 Raylib.DrawText(inv.LeadingDistance.ToString(), 10, 70, 20, Color.Blue);

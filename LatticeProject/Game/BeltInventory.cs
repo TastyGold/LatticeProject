@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LatticeProject.Game
 {
-    internal class BeltInventoryNew : IEnumerable<BeltInventoryElement>
+    internal class BeltInventory : IEnumerable<BeltInventoryElement>
     {
         //list of RLE groups of items on the belt from TAIL to HEAD (same id and distance)
         public readonly LinkedList<BeltInventoryElement> items;
@@ -236,7 +236,7 @@ namespace LatticeProject.Game
             return GetEnumerator();
         }
 
-        public BeltInventoryNew()
+        public BeltInventory()
         {
             items = new LinkedList<BeltInventoryElement>();
         }

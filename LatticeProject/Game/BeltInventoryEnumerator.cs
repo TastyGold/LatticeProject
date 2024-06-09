@@ -5,7 +5,7 @@ namespace LatticeProject.Game
 {
     internal class BeltInventoryEnumerator : IEnumerator<BeltInventoryElement>
     {
-        public BeltInventoryNew inventory;
+        public BeltInventory inventory;
 
         public int itemIndex = 0; //item index within an element
         public LinkedListNode<BeltInventoryElement>? currentElementNode; //current element from linkedlist items
@@ -33,7 +33,7 @@ namespace LatticeProject.Game
             currentElementNode = inventory.items.First;
         }
 
-        public BeltInventoryEnumerator(BeltInventoryNew inventory)
+        public BeltInventoryEnumerator(BeltInventory inventory)
         {
             this.inventory = inventory;
             currentElementNode = inventory.items.First;

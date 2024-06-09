@@ -1,8 +1,8 @@
 ﻿namespace LatticeProject.Game
 {
-    internal class BeltInventoryManagerNew
+    internal class BeltInventoryManager
     {
-        public BeltInventoryNew inventory = new BeltInventoryNew();
+        public BeltInventory inventory = new BeltInventory();
 
         public int TotalBeltLength
         {

@@ -12,4 +12,10 @@
             throw new NotImplementedException();
         }
     }
+
+    internal abstract class ItemInventory
+    {
+        public abstract bool CanRecieveItem(GameItem item);
+        public abstract void RecieveItem(GameItem item, float offset);
+    }
 }

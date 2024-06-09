@@ -7,7 +7,7 @@
             return;
             Console.WriteLine("Running BeltInventory tests:\n");
 
-            BeltInventoryNew inv = new BeltInventoryNew();
+            BeltInventory inv = new BeltInventory();
             inv.TotalBeltLength = 10;
 
             Console.WriteLine(inv.GetInventoryDescription());
