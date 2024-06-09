@@ -29,5 +29,10 @@ namespace LatticeProject.Utility
         {
             return a * (1 - t) + b * t;
         }
+
+        public static bool IsNearlyEqual(this float a, float b, float epsilon)
+        {
+            return Math.Abs(a - b) <= epsilon;
+        }
     }
 }

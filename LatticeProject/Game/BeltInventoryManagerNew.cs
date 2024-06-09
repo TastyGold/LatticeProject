@@ -1,8 +1,8 @@
 ﻿namespace LatticeProject.Game
 {
-    internal class BeltInventoryManager
+    internal class BeltInventoryManagerNew
     {
-        public BeltInventory inventory = new BeltInventory();
+        public BeltInventoryNew inventory = new BeltInventoryNew();
 
         public int TotalBeltLength
         {
@@ -13,14 +13,13 @@
         public void UpdateInventory(float deltaTime)
         {
             inventory.MoveItems(deltaTime * 5f);
-            if (inventory.CanRecieveItem())
+            if (inventory.CanRecieveItem() && Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.I))
             {
                 inventory.AddToHead(1, deltaTime * 0.5f);
             }
-
-            if (inventory.trailingDistance < 0)
+            if (Raylib_cs.Raylib.IsKeyPressed(Raylib_cs.KeyboardKey.O))
             {
-                inventory.RemoveLast();
+                inventory.RemoveTailingItem();
             }
         }
     }

@@ -35,12 +35,13 @@ namespace LatticeProject.Rendering
 
         public static void DrawBeltItems(Lattice lattice, BeltSegment segment)
         {
+            if (segment.inventoryManager.inventory.items.First is null) return;
             BeltTraverser traverser = segment.GetTraverser();
-            traverser.Advance(segment.inventoryManager.inventory.leadingDistance + BeltInventory.minItemDistance);
+            traverser.Advance(segment.inventoryManager.inventory.items.First.Value.distance - BeltInventory.minItemDistance);
 
             foreach (BeltInventoryElement item in segment.inventoryManager.inventory)
             {
-                Raylib.DrawCircleV(scale * segment.GetPositionAlongPiece(lattice, traverser.currentVertex, traverser.positionAlongPiece), scale / 5, Colors.colors[item.itemId]);
+                Raylib.DrawCircleV(scale * segment.GetPositionAlongPiece(lattice, traverser.currentVertex, traverser.positionAlongPiece), scale / 5, Colors.colors[item.itemId == -1 ? 0 : item.itemId]);
                 traverser.Advance(item.distance);
             }
         }

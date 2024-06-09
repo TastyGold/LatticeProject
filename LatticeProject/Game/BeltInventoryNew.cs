@@ -1,12 +1,16 @@
-﻿namespace LatticeProject.Game
+﻿using LatticeProject.Utility;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace LatticeProject.Game
 {
-    internal class BeltInventoryNew
+    internal class BeltInventoryNew : IEnumerable<BeltInventoryElement>
     {
         //list of RLE groups of items on the belt from TAIL to HEAD (same id and distance)
         public readonly LinkedList<BeltInventoryElement> items;
 
         //the item furthest along the belt that is not stationary (not yet bunched up at the end)
-        public LinkedListNode<BeltInventoryElement>? itemToMove = null;
+        public LinkedListNode<BeltInventoryElement>? ItemToMove { get; private set; } = null;
 
         //number of total items on the belt
         public int Count { get; private set; }
@@ -27,19 +31,22 @@
             }
         }
 
+        public bool CanRecieveItem() => LeadingDistance > 0;
+
         /// <summary> Adds a new item to the head of the belt (exact position offset can be specified with distanceToHead).</summary>
         public void AddToHead(int itemId, float distanceFromHead)
         {
             if (items.Last is null) //list is empty
             {
                 items.AddFirst(new BeltInventoryElement(itemId, TotalBeltLength - distanceFromHead, 1));
-                itemToMove = items.First;
+                ItemToMove = items.First;
 
                 LeadingDistance = distanceFromHead;
             }
             else
             {
                 float newItemPosition = distanceFromHead; //the position on the belt the new item will be set to
+                float newItemDistanceToNext = minItemDistance; //distance between the new item and old first item
 
                 float maxPosition = LeadingDistance - minItemDistance;
                 if (distanceFromHead > maxPosition)
@@ -47,10 +54,12 @@
                     //if the new item is too close to the current item closest to the head, it is shifted back to be minItemDistance away
                     newItemPosition = maxPosition;
                 }
+                else
+                {
+                    newItemDistanceToNext = LeadingDistance - newItemPosition;
+                }
 
-                float newItemDistanceToNext = LeadingDistance - newItemPosition; //distance between the new item and old first item
-
-                if (newItemDistanceToNext == items.Last.Value.distance)
+                if (newItemDistanceToNext.IsNearlyEqual(items.Last.Value.distance, 0.01f) && items.Last.Value.itemId == itemId)
                 {
                     //increases the quantity of the RLE chain closest to the head of the belt
                     items.Last.Value.count++;
@@ -59,23 +68,120 @@
                 {
                     //creates a new RLE at the head of the belt
                     items.AddLast(new BeltInventoryElement(itemId, newItemDistanceToNext, 1));
+                    if (ItemToMove is null) ItemToMove = items.Last;
                 }
 
                 //update the leading distance after new item is added
                 LeadingDistance = newItemPosition;
             }
+
+            Count++; //update the inventory item count
         }
 
         /// <summary> Removes the item closest to the tail of the belt from the inventory.</summary>
         public void RemoveTailingItem()
         {
-            if (items.First is not null)
+            if (items.First is null) return;
+
+            if (items.First.Value.count > 1) //if the first RLE element has multiple items
             {
-                if (items.First.Value.count > 1)
+                items.First.Value.count--;
+                ItemToMove = SetFirstInElementDistance(items.First, items.First.Value.distance * 2);
+            }
+            else //first RLE element only has one item
+            {
+                if (items.First.Next is null) //if there is only one item on the belt
                 {
-                    items.First.Value.count--;
-                    _ = SetFirstInElementDistance(items.First, items.First.Value.distance * 2);
+                    items.RemoveFirst();
+                    LeadingDistance = TotalBeltLength;
+                    ItemToMove = null;
                 }
+                else
+                {
+                    LinkedListNode<BeltInventoryElement> second = items.First.Next;
+                    ItemToMove = SetFirstInElementDistance(second, second.Value.distance + items.First.Value.distance);
+                    items.RemoveFirst();
+                }
+            }
+
+            //update the inventory item count
+            Count--;
+        }
+
+        public void MoveItems(float distance)
+        {
+            float remainingDistance = distance;
+
+            while (remainingDistance > 0 && ItemToMove is not null)
+            {
+                if (ItemToMove.Value.distance <= minItemDistance) //if item to move is already minItemDistance
+                {
+                    ItemToMove.Value.distance = minItemDistance;
+                    ItemToMove = TryCombineNodeWithPrevious(ItemToMove);
+                }
+                else
+                {
+                    if (ItemToMove.Value.count > 1 && ItemToMove.Value.distance > minItemDistance)
+                    {
+                        ItemToMove = SeparateFirstItemFromElement(ItemToMove);
+                    }
+
+                    if (remainingDistance > ItemToMove.Value.distance - minItemDistance)
+                    {
+                        remainingDistance -= ItemToMove.Value.distance - minItemDistance;
+                        ItemToMove.Value.distance = minItemDistance;
+
+                        ItemToMove = TryCombineNodeWithPrevious(ItemToMove);
+                    }
+                    else
+                    {
+                        ItemToMove.Value.distance -= remainingDistance;
+                        remainingDistance = 0;
+                    }
+                }
+            }
+
+            LeadingDistance += distance - remainingDistance;
+        }
+
+        public LinkedListNode<BeltInventoryElement>? TryCombineNodeWithPrevious(LinkedListNode<BeltInventoryElement> node)
+        {
+            LinkedListNode<BeltInventoryElement>? output = node;
+
+            if (node.Previous is not null)
+            {
+                //combine ItemToMove element with previous RLE element
+                if (node.Previous.Value.itemId == node.Value.itemId)
+                {
+                    //update count of previous RLE to include ItemToMove count
+                    node.Previous.Value.count += node.Value.count;
+
+                    //remove the ItemToMove node from items
+                    LinkedListNode<BeltInventoryElement> itemToRemove = node;
+                    output = node.Next;
+                    items.Remove(itemToRemove);
+                }
+            }
+            else
+            {
+                output = node.Next;
+            }
+
+            return output;
+        }
+
+        /// <returns>A reference to the new separated node</returns>
+        public LinkedListNode<BeltInventoryElement> SeparateFirstItemFromElement(LinkedListNode<BeltInventoryElement> node)
+        {
+            if (node.Value.count <= 1)
+            {
+                return node;
+            }
+            else
+            {
+                LinkedListNode<BeltInventoryElement> previous = items.AddBefore(node, new BeltInventoryElement(node.Value.itemId, node.Value.distance, 1));
+                node.Value.count--;
+                return previous;
             }
         }
 
@@ -100,7 +206,34 @@
                 node.Value.count--;
                 return previous;
             }
+        }
 
+        public string GetInventoryDescription()
+        {
+            string output = $"count={Count}\n";
+            int i = 0;
+            int itemToMoveIndex = -1;
+
+            foreach (BeltInventoryElement item in items)
+            {
+                output += $"i={i}, " + item.ToString() + '\n';
+                if (item == ItemToMove?.Value) itemToMoveIndex = i;
+                i++;
+            }
+            output += $"itemToMove={(itemToMoveIndex != -1 ? itemToMoveIndex : "null")}\n";
+
+            return output;
+        }
+
+
+        public IEnumerator<BeltInventoryElement> GetEnumerator()
+        {
+            return new BeltInventoryEnumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         public BeltInventoryNew()

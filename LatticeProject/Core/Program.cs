@@ -1,4 +1,5 @@
-﻿using Raylib_cs;
+﻿using LatticeProject.Game;
+using Raylib_cs;
 using System.Numerics;
 
 namespace LatticeProject.Core
@@ -7,6 +8,9 @@ namespace LatticeProject.Core
     {
         public static void Main()
         {
+            BeltInventoryTests.RunTests();
+            //Console.ReadLine();
+
             GameManager.Begin();
 
             while (!Raylib.WindowShouldClose())

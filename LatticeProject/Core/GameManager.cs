@@ -88,11 +88,11 @@ namespace LatticeProject.Core
             Raylib.DrawFPS(10, 10);
             if (mainChunk.beltSegments.Count > 0)
             {
-                BeltInventory inv = mainChunk.beltSegments[^1].inventoryManager.inventory;
+                BeltInventoryNew inv = mainChunk.beltSegments[^1].inventoryManager.inventory;
                 Raylib.DrawText(inv.TotalBeltLength.ToString(), 10, 30, 20, Color.Purple);
                 Raylib.DrawText(inv.Count.ToString(), 10, 50, 20, Color.Blue);
-                Raylib.DrawText(inv.leadingDistance.ToString(), 10, 70, 20, Color.Blue);
-                Raylib.DrawText(inv.trailingDistance.ToString(), 10, 90, 20, Color.Maroon);
+                Raylib.DrawText(inv.LeadingDistance.ToString(), 10, 70, 20, Color.Blue);
+                Raylib.DrawText(inv.ItemToMove?.ToString(), 10, 90, 20, Color.Maroon);
                 int i = 110;
                 foreach (BeltInventoryElement item in inv.items)
                 {
