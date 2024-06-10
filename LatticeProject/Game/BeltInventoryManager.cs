@@ -13,9 +13,9 @@
         public void UpdateInventory(float deltaTime)
         {
             inventory.MoveItems(deltaTime * 5f);
-            if (inventory.CanRecieveItem() && Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.I))
+            if (inventory.CanRecieveItem() && Raylib_cs.Raylib.IsKeyPressed(Raylib_cs.KeyboardKey.I))
             {
-                inventory.AddToHead(1, deltaTime * 0.5f);
+                inventory.AddToHead(inventory.Count / 3, 0);
             }
             if (Raylib_cs.Raylib.IsKeyPressed(Raylib_cs.KeyboardKey.O))
             {

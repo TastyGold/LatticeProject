@@ -37,12 +37,15 @@ namespace LatticeProject.Rendering
         {
             if (segment.inventoryManager.inventory.items.First is null) return;
             BeltTraverser traverser = segment.GetTraverser();
-            traverser.Advance(segment.inventoryManager.inventory.items.First.Value.distance - BeltInventory.minItemDistance);
+            traverser.ResetEnd();
+            traverser.AdvanceReverse(segment.inventoryManager.inventory.items.First.Value.distance);// - BeltInventory.minItemDistance);
 
+            //Console.WriteLine($"\nStarting render: {segment.inventoryManager.inventory.Count}");
             foreach (BeltInventoryElement item in segment.inventoryManager.inventory)
             {
-                Raylib.DrawCircleV(scale * segment.GetPositionAlongPiece(lattice, traverser.currentVertex, traverser.positionAlongPiece), scale / 5, Colors.colors[item.itemId == -1 ? 0 : item.itemId]);
-                traverser.Advance(item.distance);
+                //Console.WriteLine($"RenderingItemId: {item.itemId}");
+                Raylib.DrawCircleV(scale * segment.GetPositionAlongPiece(lattice, traverser.currentVertex, traverser.positionAlongPiece), scale / 5, Colors.colors[item.itemId == -1 ? 0 : item.itemId % Colors.numColors]);
+                traverser.AdvanceReverse(item.distance);
             }
         }
     }

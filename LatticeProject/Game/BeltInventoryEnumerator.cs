@@ -16,12 +16,18 @@ namespace LatticeProject.Game
 
         public bool MoveNext()
         {
-            itemIndex++;
             if (currentElementNode is null) return false;
-            else if (itemIndex >= currentElementNode.Value.count)
+            if (itemIndex < 0)
             {
                 itemIndex = 0;
                 currentElementNode = currentElementNode.Next;
+                if (currentElementNode is null) return false;
+            }
+
+            itemIndex++;
+            if (itemIndex >= currentElementNode.Value.count)
+            {
+                itemIndex = -1;
             }
 
             return true;

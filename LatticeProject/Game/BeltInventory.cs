@@ -1,6 +1,5 @@
 ﻿using LatticeProject.Utility;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace LatticeProject.Game
 {
@@ -38,6 +37,7 @@ namespace LatticeProject.Game
         {
             if (items.Last is null) //list is empty
             {
+                Console.WriteLine("double");
                 items.AddFirst(new BeltInventoryElement(itemId, TotalBeltLength - distanceFromHead, 1));
                 ItemToMove = items.First;
 
@@ -115,6 +115,7 @@ namespace LatticeProject.Game
             //terminates when all remainingDistance has been used OR when all items are stationary
             while (remainingDistance > 0 && ItemToMove is not null)
             {
+                Console.WriteLine(items.Count);
                 if (ItemToMove.Value.distance <= minItemDistance) //if ItemToMove is already minItemDistance
                 {
                     //try to combine element with previous and move on to next element
@@ -153,24 +154,22 @@ namespace LatticeProject.Game
         }
 
         /// <summary>Attempts to combine the counts of two RLE elements if they have the same id and distance.</summary>
-        /// <returns>The node.next that comes after the combined element</returns>
+        /// <returns>The next node after the inputted node.</returns>
         public LinkedListNode<BeltInventoryElement>? TryCombineNodeWithPrevious(LinkedListNode<BeltInventoryElement> node)
         {
-            LinkedListNode<BeltInventoryElement>? output = node;
+            LinkedListNode<BeltInventoryElement>? output;
 
-            if (node.Previous is not null)
+            if (node.Previous is not null && node.Previous.Value.itemId == node.Value.itemId)
             {
                 //combine ItemToMove element with previous RLE element
-                if (node.Previous.Value.itemId == node.Value.itemId)
-                {
-                    //update count of previous RLE to include ItemToMove count
-                    node.Previous.Value.count += node.Value.count;
 
-                    //remove the ItemToMove node from items
-                    LinkedListNode<BeltInventoryElement> itemToRemove = node;
-                    output = node.Next;
-                    items.Remove(itemToRemove);
-                }
+                //update count of previous RLE to include ItemToMove count
+                node.Previous.Value.count += node.Value.count;
+
+                //remove the ItemToMove node from items
+                LinkedListNode<BeltInventoryElement> itemToRemove = node;
+                output = node.Next;
+                items.Remove(itemToRemove);
             }
             else
             {
@@ -185,10 +184,12 @@ namespace LatticeProject.Game
         {
             if (node.Value.count <= 1)
             {
+                //if node only has one item, no separation is required
                 return node;
             }
             else
             {
+                //creates a new linkedListNode containing the first item of the target element
                 LinkedListNode<BeltInventoryElement> previous = items.AddBefore(node, new BeltInventoryElement(node.Value.itemId, node.Value.distance, 1));
                 node.Value.count--;
                 return previous;
@@ -200,22 +201,11 @@ namespace LatticeProject.Game
         {
             if (node.Value.distance == distance) return node; //no change is made
 
-            if (node.Value.count == 1) //change is made to element of count 1
-            {
-                node.Value.distance = distance;
-                return node;
-            }
-            else
-            {
-                //separates the trailing item from a multi-item element and gives it the specified distance
+            //separates the trailing item from a multi-item element and gives it the specified distance
+            LinkedListNode<BeltInventoryElement> firstInNode = SeparateFirstItemFromElement(node);
+            firstInNode.Value.distance = distance;
 
-                LinkedListNode<BeltInventoryElement> previous = items.AddBefore(
-                    node, new BeltInventoryElement(node.Value.itemId, distance, 1)
-                    );
-
-                node.Value.count--;
-                return previous;
-            }
+            return firstInNode;
         }
 
         public string GetInventoryDescription()
