@@ -36,12 +36,14 @@
                 currentVertex--;
             }
 
-            if (currentVertex <= 0 && positionAlongPiece < 0)
+            /*if (currentVertex <= 0 && positionAlongPiece < 0)
             {
-                positionAlongBelt = 0;
+                positionAlongBelt = 0; //if commented, traverser can be behind head node 
                 positionAlongPiece = 0;
             }
-            else positionAlongBelt -= distance;
+            else*/
+
+            positionAlongBelt -= distance;
         }
 
         public void Reset()

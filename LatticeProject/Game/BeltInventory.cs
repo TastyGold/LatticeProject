@@ -37,7 +37,6 @@ namespace LatticeProject.Game
         {
             if (items.Last is null) //list is empty
             {
-                Console.WriteLine("double");
                 items.AddFirst(new BeltInventoryElement(itemId, TotalBeltLength - distanceFromHead, 1));
                 ItemToMove = items.First;
 
@@ -115,7 +114,6 @@ namespace LatticeProject.Game
             //terminates when all remainingDistance has been used OR when all items are stationary
             while (remainingDistance > 0 && ItemToMove is not null)
             {
-                Console.WriteLine(items.Count);
                 if (ItemToMove.Value.distance <= minItemDistance) //if ItemToMove is already minItemDistance
                 {
                     //try to combine element with previous and move on to next element
