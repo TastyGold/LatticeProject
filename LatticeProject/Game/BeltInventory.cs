@@ -17,8 +17,6 @@ namespace LatticeProject.Game
         //the distance from the head of the belt to the first item
         public float LeadingDistance { get; private set; }
 
-        public const float minItemDistance = 2 / 3f;
-
         private int _totalBeltLength = 0;
         public int TotalBeltLength
         {
@@ -45,9 +43,9 @@ namespace LatticeProject.Game
             else
             {
                 float newItemPosition = distanceFromHead; //the position on the belt the new item will be set to
-                float newItemDistanceToNext = minItemDistance; //distance between the new item and old first item
+                float newItemDistanceToNext = GameRules.minItemDistance; //distance between the new item and old first item
 
-                float maxPosition = LeadingDistance - minItemDistance;
+                float maxPosition = LeadingDistance - GameRules.minItemDistance;
                 if (distanceFromHead > maxPosition)
                 {
                     //if the new item is too close to the current item closest to the head, it is shifted back to be minItemDistance away
@@ -114,10 +112,10 @@ namespace LatticeProject.Game
             //terminates when all remainingDistance has been used OR when all items are stationary
             while (remainingDistance > 0 && ItemToMove is not null)
             {
-                if (ItemToMove.Value.distance <= minItemDistance) //if ItemToMove is already minItemDistance
+                if (ItemToMove.Value.distance <= GameRules.minItemDistance) //if ItemToMove is already minItemDistance
                 {
                     //try to combine element with previous and move on to next element
-                    ItemToMove.Value.distance = minItemDistance;
+                    ItemToMove.Value.distance = GameRules.minItemDistance;
                     ItemToMove = TryCombineNodeWithPrevious(ItemToMove);
                 }
                 else
@@ -129,11 +127,11 @@ namespace LatticeProject.Game
                     }
 
                     //if remaining distance is greater than that which can be subtracted from the current ItemToMove
-                    if (remainingDistance > ItemToMove.Value.distance - minItemDistance)
+                    if (remainingDistance > ItemToMove.Value.distance - GameRules.minItemDistance)
                     {
                         //move ItemToMove to minItemDistance
-                        remainingDistance -= ItemToMove.Value.distance - minItemDistance;
-                        ItemToMove.Value.distance = minItemDistance;
+                        remainingDistance -= ItemToMove.Value.distance - GameRules.minItemDistance;
+                        ItemToMove.Value.distance = GameRules.minItemDistance;
 
                         //and try to combine with previous RLE chunk
                         ItemToMove = TryCombineNodeWithPrevious(ItemToMove);
@@ -222,7 +220,6 @@ namespace LatticeProject.Game
 
             return output;
         }
-
 
         public IEnumerator<BeltInventoryElement> GetEnumerator()
         {

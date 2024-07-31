@@ -48,7 +48,7 @@ namespace LatticeProject.Rendering
                 if (firstItem == true)
                 {
                     //hacky method of aligning minItemDistance from tail to be exactly on tail
-                    traverser.Advance(BeltInventory.minItemDistance);
+                    traverser.Advance(GameRules.minItemDistance);
                     firstItem = false;
                 }
 

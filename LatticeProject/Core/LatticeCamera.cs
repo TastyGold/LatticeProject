@@ -77,13 +77,16 @@ namespace LatticeProject.Core
 
         private void HandleCameraZooming()
         {
-            if (Raylib.GetMouseWheelMove() > 0 && targetZoom < maxZoom)
+            if (!Raylib.IsKeyDown(KeyboardKey.LeftShift))
             {
-                targetZoom *= cameraZoomFactor;
-            }
-            if (Raylib.GetMouseWheelMove() < 0 && targetZoom > minZoom)
-            {
-                targetZoom /= cameraZoomFactor;
+                if (Raylib.GetMouseWheelMove() > 0 && targetZoom < maxZoom)
+                {
+                    targetZoom *= cameraZoomFactor;
+                }
+                if (Raylib.GetMouseWheelMove() < 0 && targetZoom > minZoom)
+                {
+                    targetZoom /= cameraZoomFactor;
+                }
             }
             camera.Zoom = LatticeMath.Lerp(camera.Zoom, targetZoom, Raylib.GetFrameTime() * cameraZoomLerpSpeed);
         }

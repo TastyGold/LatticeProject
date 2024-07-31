@@ -19,6 +19,8 @@ namespace LatticeProject.Core
         static VecInt2[] linePoints = new VecInt2[0];
         public static int nextColor = 0;
 
+        static float simulationSpeed = 1;
+
         public static void Begin()
         {
             Raylib.InitWindow(1600, 900, "Hello World");
@@ -54,7 +56,12 @@ namespace LatticeProject.Core
             if (Raylib.IsKeyPressed(KeyboardKey.Left)) mainCam.camera.Rotation -= 30;
             if (Raylib.IsKeyPressed(KeyboardKey.Right)) mainCam.camera.Rotation += 30;
 
-            mainChunk.Update(Raylib.GetFrameTime());
+            if (Raylib.IsKeyDown(KeyboardKey.LeftShift) && Raylib.GetMouseWheelMove() != 0)
+            {
+                simulationSpeed *= Raylib.GetMouseWheelMove() > 0 ? 1.2f : 1 / 1.2f;
+            }
+
+            mainChunk.Update(Math.Min(Raylib.GetFrameTime() * simulationSpeed, GameRules.minItemDistance));
 
             mainCam.UpdateCamera();
         }
@@ -79,14 +86,15 @@ namespace LatticeProject.Core
             Raylib.EndMode2D();
 
             Raylib.DrawFPS(10, 10);
+            Raylib.DrawText("Simulation speed = " + simulationSpeed.ToString()[..Math.Min(simulationSpeed.ToString().Length, 5)] + "x", 10, 30, 20, Color.LightGray);
             if (mainChunk.beltSegments.Count > 0)
             {
                 BeltInventory inv = mainChunk.beltSegments[^1].inventoryManager.inventory;
-                Raylib.DrawText("Total belt length = " + inv.TotalBeltLength.ToString(), 10, 30, 20, Color.Purple);
-                Raylib.DrawText("Item count = " + inv.Count.ToString(), 10, 50, 20, Color.Blue);
-                Raylib.DrawText("Leading distance = " + inv.LeadingDistance.ToString(), 10, 70, 20, Color.Blue);
-                Raylib.DrawText("Item to move = " + inv.ItemToMove?.ToString(), 10, 90, 20, Color.Maroon);
-                int i = 110;
+                Raylib.DrawText("Total belt length = " + inv.TotalBeltLength.ToString(), 10, 50, 20, Color.Purple);
+                Raylib.DrawText("Item count = " + inv.Count.ToString(), 10, 70, 20, Color.Blue);
+                Raylib.DrawText("Leading distance = " + inv.LeadingDistance.ToString(), 10, 90, 20, Color.Blue);
+                Raylib.DrawText("Item to move = " + inv.ItemToMove?.ToString(), 10, 110, 20, Color.Maroon);
+                int i = 130;
                 foreach (BeltInventoryElement item in inv.items)
                 {
                     Raylib.DrawText($"i={(i - 110) / 20}, {item}", 10, i, 20, Color.Lime);
