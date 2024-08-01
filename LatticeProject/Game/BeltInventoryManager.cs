@@ -43,8 +43,8 @@
                     // will need to change moveItems() method to fix this
 
                     depositInventory.RecieveItem(itemToTransfer, -GameRules.minItemDistance);
+                    inventory.RemoveTailingItem();
                 }
-                inventory.RemoveTailingItem();
             }
         }
     }

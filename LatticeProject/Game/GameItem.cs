@@ -1,6 +1,6 @@
 ﻿namespace LatticeProject.Game
 {
-    internal struct GameItem
+    internal class GameItem
     {
         public int color;
 

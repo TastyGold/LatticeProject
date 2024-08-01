@@ -28,7 +28,9 @@ namespace LatticeProject.Game
             }
         }
 
-        public bool CanRecieveItem() => LeadingDistance > 0;
+        public const float maximumItemSnapDistance = 0.2f;
+
+        public bool CanRecieveItem() => LeadingDistance >= 0;
 
         /// <summary> Adds a new item to the head of the belt (exact position offset can be specified with distanceToHead).</summary>
         public void AddToHead(int itemId, float distanceFromHead)
@@ -42,30 +44,43 @@ namespace LatticeProject.Game
             }
             else
             {
-                float newItemPosition = distanceFromHead; //the position on the belt the new item will be set to
-                float newItemDistanceToNext = GameRules.minItemDistance; //distance between the new item and old first item
-
                 float maxPosition = LeadingDistance - GameRules.minItemDistance;
-                if (distanceFromHead > maxPosition)
+                float newItemDistanceToNext; //distance between the new item and old first item
+
+                float newItemPosition; //the position on the belt the new item will be set to
+                if (distanceFromHead.IsNearlyEqual(maxPosition, maximumItemSnapDistance))
+                {
+                    newItemPosition = maxPosition;
+                }
+                else
+                {
+                    newItemPosition = distanceFromHead;
+                }
+
+                if (newItemPosition >= maxPosition)
                 {
                     //if the new item is too close to the current item closest to the head, it is shifted back to be minItemDistance away
                     newItemPosition = maxPosition;
+                    newItemDistanceToNext = GameRules.minItemDistance;
                 }
                 else
                 {
                     newItemDistanceToNext = LeadingDistance - newItemPosition;
                 }
 
-                if (newItemDistanceToNext.IsNearlyEqual(items.Last.Value.distance, 0.01f) && items.Last.Value.itemId == itemId)
+                Console.Write(newItemDistanceToNext + ", " + items.Last.Value.distance + ", ");
+                if (newItemDistanceToNext.IsNearlyEqual(items.Last.Value.distance, maximumItemSnapDistance) && items.Last.Value.itemId == itemId)
                 {
                     //increases the quantity of the RLE chain closest to the head of the belt
                     items.Last.Value.count++;
+                    Console.WriteLine("Merged");
                 }
                 else
                 {
                     //creates a new RLE at the head of the belt
                     items.AddLast(new BeltInventoryElement(itemId, newItemDistanceToNext, 1));
                     if (ItemToMove is null) ItemToMove = items.Last;
+                    Console.WriteLine("Not");
                 }
 
                 //update the leading distance after new item is added

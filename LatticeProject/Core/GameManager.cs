@@ -24,6 +24,7 @@ namespace LatticeProject.Core
         public static void Begin()
         {
             Raylib.InitWindow(1600, 900, "Hello World");
+            Raylib.SetTargetFPS(60);
             RenderConfig.scale = 150;
         }
 
