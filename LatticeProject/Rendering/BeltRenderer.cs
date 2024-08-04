@@ -52,7 +52,7 @@ namespace LatticeProject.Rendering
                     firstItem = false;
                 }
 
-                Raylib.DrawCircleV(scale * segment.GetPositionAlongPiece(lattice, traverser.currentVertex, traverser.positionAlongPiece), scale / 5, Colors.colors[item.itemId == -1 ? 0 : item.itemId % Colors.numColors]);
+                Raylib.DrawCircleV(scale * segment.GetPositionAlongPiece(lattice, traverser.CurrentVertex, traverser.PositionAlongPiece), scale / 5, Colors.colors[item.itemId == -1 ? 0 : item.itemId % Colors.numColors]);
             }
         }
     }

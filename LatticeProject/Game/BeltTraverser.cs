@@ -4,36 +4,36 @@
     {
         private readonly BeltSegment segment;
 
-        public int currentVertex = 0;
-        public float positionAlongBelt = 0;
-        public float positionAlongPiece = 0;
+        public int CurrentVertex { get; private set; }
+        public float PositionAlongBelt { get; private set; }
+        public float PositionAlongPiece { get; private set; }
 
         public void Advance(float distance)
         {
-            positionAlongPiece += distance;
+            PositionAlongPiece += distance;
 
-            while (currentVertex < segment.pieceLengths.Count && positionAlongPiece > segment.pieceLengths[currentVertex])
+            while (CurrentVertex < segment.pieceLengths.Count && PositionAlongPiece > segment.pieceLengths[CurrentVertex])
             {
-                positionAlongPiece -= segment.pieceLengths[currentVertex];
-                currentVertex++;
+                PositionAlongPiece -= segment.pieceLengths[CurrentVertex];
+                CurrentVertex++;
             }
 
-            if (currentVertex >= segment.pieceLengths.Count)
+            if (CurrentVertex >= segment.pieceLengths.Count)
             {
-                positionAlongBelt = segment.TotalLength - distance;
-                positionAlongPiece = 0;
+                PositionAlongBelt = segment.TotalLength - distance;
+                PositionAlongPiece = 0;
             }
-            else positionAlongBelt += distance;
+            else PositionAlongBelt += distance;
         }
 
         public void AdvanceReverse(float distance)
         {
-            positionAlongPiece -= distance;
+            PositionAlongPiece -= distance;
 
-            while (currentVertex > 0 && positionAlongPiece < 0)
+            while (CurrentVertex > 0 && PositionAlongPiece < 0)
             {
-                positionAlongPiece += segment.pieceLengths[currentVertex - 1];
-                currentVertex--;
+                PositionAlongPiece += segment.pieceLengths[CurrentVertex - 1];
+                CurrentVertex--;
             }
 
             /*if (currentVertex <= 0 && positionAlongPiece < 0)
@@ -43,21 +43,21 @@
             }
             else*/
 
-            positionAlongBelt -= distance;
+            PositionAlongBelt -= distance;
         }
 
         public void Reset()
         {
-            currentVertex = 0;
-            positionAlongBelt = 0;
-            positionAlongPiece = 0;
+            CurrentVertex = 0;
+            PositionAlongBelt = 0;
+            PositionAlongPiece = 0;
         }
 
         public void ResetEnd()
         {
-            currentVertex = segment.vertices.Count - 1;
-            positionAlongBelt = segment.TotalLength;
-            positionAlongPiece = 0;
+            CurrentVertex = segment.vertices.Count - 1;
+            PositionAlongBelt = segment.TotalLength;
+            PositionAlongPiece = 0;
         }
 
         public BeltTraverser(BeltSegment segment)
