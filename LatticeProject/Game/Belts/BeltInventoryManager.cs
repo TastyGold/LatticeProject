@@ -36,13 +36,6 @@
         }
 
         //Manager methods
-        public void PrepareUpdate(float deltaTime)
-        {
-            TryAcceptRecievedItem();
-
-            AvailableDistance = inventory.LeadingDistance + deltaTime;
-        }
-
         public void UpdateInventory(float deltaTime)
         {
             depositInventory = this; //temporary
@@ -65,6 +58,14 @@
             {
                 depositInventory.TryRecieveItem(transferItem.item, transferItem.offset);
             }
+        }
+
+        /// <summary>Should be called after UpdateInventory() to ensure drawing happens correctly</summary>
+        public void PrepForNextUpdate(float deltaTime)
+        {
+            TryAcceptRecievedItem();
+
+            AvailableDistance = inventory.LeadingDistance + deltaTime;
         }
     }
 }

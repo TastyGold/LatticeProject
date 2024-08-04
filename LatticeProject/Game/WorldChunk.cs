@@ -10,11 +10,11 @@ namespace LatticeProject.Game
         {
             foreach (BeltSegment segment in beltSegments)
             {
-                segment.inventoryManager.PrepareUpdate(deltaTime);
+                segment.inventoryManager.UpdateInventory(deltaTime);
             }
             foreach (BeltSegment segment in beltSegments)
             {
-                segment.inventoryManager.UpdateInventory(deltaTime);
+                segment.inventoryManager.PrepForNextUpdate(deltaTime);
             }
         }
     }

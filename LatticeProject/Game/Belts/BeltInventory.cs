@@ -134,12 +134,7 @@ namespace LatticeProject.Game.Belts
             //update the inventory item count
             Count--;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="distance"></param>
-        /// <param name="endOfBeltPadding"></param>
+        
         /// <returns>The GameItem and offset to transfer to the associated deposit inventory</returns>
         public GameItemWithOffset? MoveItems(float distance, float endOfBeltPadding, bool canTransfer)
         {
@@ -172,6 +167,8 @@ namespace LatticeProject.Game.Belts
                     RemoveTailingItem();
                 }
             }
+
+            //TODO: implement endOfBeltPadding
 
             //terminates when all remainingDistance has been used OR when all items are stationary
             while (remainingDistance > 0 && ItemToMove is not null)
