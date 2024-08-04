@@ -42,9 +42,9 @@ namespace LatticeProject.Rendering
             traverser.ResetEnd();
             bool firstItem = true;
 
-            foreach (BeltInventoryElement item in segment.inventoryManager.inventory)
+            foreach (BeltInventoryElement element in segment.inventoryManager.inventory)
             {
-                traverser.AdvanceReverse(item.distance);
+                traverser.AdvanceReverse(element.distance);
 
                 if (firstItem == true)
                 {
@@ -53,7 +53,7 @@ namespace LatticeProject.Rendering
                     firstItem = false;
                 }
 
-                Raylib.DrawCircleV(scale * segment.GetPositionAlongPiece(lattice, traverser.CurrentVertex, traverser.PositionAlongPiece), scale / 5, Colors.colors[item.itemId == -1 ? 0 : item.itemId % Colors.numColors]);
+                Raylib.DrawCircleV(scale * segment.GetPositionAlongPiece(lattice, traverser.CurrentVertex, traverser.PositionAlongPiece), scale / 5, Colors.colors[element.item.color == -1 ? 0 : element.item.color % Colors.numColors]);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace LatticeProject.Game.Belts
         public int itemIndex = 0; //item index within an element
         public LinkedListNode<BeltInventoryElement>? currentElementNode; //current element from linkedlist items
 
-        public BeltInventoryElement Current => currentElementNode is null ? new BeltInventoryElement(-1, 0, 0) : currentElementNode.Value;
+        public BeltInventoryElement Current => currentElementNode is null ? new BeltInventoryElement(new GameItem(-1), 0, 0) : currentElementNode.Value;
 
         object? IEnumerator.Current => Current;
 

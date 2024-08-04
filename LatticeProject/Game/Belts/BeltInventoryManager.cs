@@ -21,7 +21,7 @@
         {
             if (RecievedItem is null) return false;
 
-            inventory.AddToHead(RecievedItem.color, RecievedItemOffset);
+            inventory.AddToHead(RecievedItem, RecievedItemOffset);
             RecievedItem = null;
             return true;
         }
@@ -35,6 +35,7 @@
             return true;
         }
 
+        //Manager methods
         public void PrepareUpdate(float deltaTime)
         {
             TryAcceptRecievedItem();
@@ -49,7 +50,7 @@
             //manually add/remove items
             if (inventory.CanRecieveItem() && Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.I))
             {
-                inventory.AddToHead(1, -GameRules.minItemDistance);
+                inventory.AddToHead(new GameItem(1), -GameRules.minItemDistance);
             }
             if (Raylib_cs.Raylib.IsKeyPressed(Raylib_cs.KeyboardKey.O))
             {

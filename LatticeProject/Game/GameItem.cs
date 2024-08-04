@@ -13,5 +13,22 @@
         {
             this.color = color;
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is not null
+                && obj is GameItem item
+                && item.color == color;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(color);
+        }
+
+        public override string? ToString()
+        {
+            return base.ToString();
+        }
     }
 }

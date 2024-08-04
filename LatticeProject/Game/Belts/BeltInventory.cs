@@ -33,11 +33,11 @@ namespace LatticeProject.Game.Belts
         public bool CanRecieveItem() => LeadingDistance >= 0;
 
         /// <summary> Adds a new item to the head of the belt (exact position offset can be specified with distanceToHead).</summary>
-        public void AddToHead(int itemId, float distanceFromHead)
+        public void AddToHead(GameItem item, float distanceFromHead)
         {
             if (items.Last is null) //list is empty
             {
-                items.AddFirst(new BeltInventoryElement(itemId, TotalBeltLength - distanceFromHead, 1));
+                items.AddFirst(new BeltInventoryElement(item, TotalBeltLength - distanceFromHead, 1));
                 ItemToMove = items.First;
 
                 LeadingDistance = distanceFromHead;
@@ -68,7 +68,7 @@ namespace LatticeProject.Game.Belts
                     newItemDistanceToNext = LeadingDistance - newItemPosition;
                 }
 
-                if (newItemDistanceToNext.IsNearlyEqual(items.Last.Value.distance, maximumItemSnapDistance) && items.Last.Value.itemId == itemId)
+                if (newItemDistanceToNext.IsNearlyEqual(items.Last.Value.distance, maximumItemSnapDistance) && items.Last.Value.item.Equals(item))
                 {
                     //increases the quantity of the RLE chain closest to the head of the belt
                     items.Last.Value.count++;
@@ -76,7 +76,7 @@ namespace LatticeProject.Game.Belts
                 else
                 {
                     //creates a new RLE at the head of the belt
-                    items.AddLast(new BeltInventoryElement(itemId, newItemDistanceToNext, 1));
+                    items.AddLast(new BeltInventoryElement(item, newItemDistanceToNext, 1));
                     if (ItemToMove is null) ItemToMove = items.Last;
                 }
 
@@ -140,7 +140,7 @@ namespace LatticeProject.Game.Belts
         /// </summary>
         /// <param name="distance"></param>
         /// <param name="endOfBeltPadding"></param>
-        /// <returns>The GameItem to transfer to the associated deposit inventory</returns>
+        /// <returns>The GameItem and offset to transfer to the associated deposit inventory</returns>
         public GameItemWithOffset? MoveItems(float distance, float endOfBeltPadding, bool canTransfer)
         {
             float remainingDistance = distance;
@@ -150,19 +150,23 @@ namespace LatticeProject.Game.Belts
             GameItemWithOffset? transferItem = null;
             if (canTransfer && items.First is not null)
             {
+                //reset itemToMove to tailing element
                 ItemToMove = items.First;
                 if (ItemToMove.Value.count != 1)
                 {
+                    //ensure first element has only one item
                     SeparateFirstItemFromElement(ItemToMove);
                 }
 
+                //move tailing item requiredDistance (while loop will be skipped)
                 items.First.Value.distance -= remainingDistance;
                 remainingDistance = 0;
 
                 if (items.First.Value.distance < GameRules.minItemDistance)
                 {
+                    //send tailing item to deposit inventory
                     transferItem = new GameItemWithOffset(
-                        new GameItem(items.First.Value.itemId),
+                        items.First.Value.item,
                         -items.First.Value.distance
                         );
                     RemoveTailingItem();
@@ -217,7 +221,7 @@ namespace LatticeProject.Game.Belts
         {
             LinkedListNode<BeltInventoryElement>? output;
 
-            if (node.Previous is not null && node.Previous.Value.itemId == node.Value.itemId)
+            if (node.Previous is not null && node.Previous.Value.item.Equals(node.Value.item))
             {
                 //combine ItemToMove element with previous RLE element
 
@@ -248,7 +252,7 @@ namespace LatticeProject.Game.Belts
             else
             {
                 //creates a new linkedListNode containing the first item of the target element
-                LinkedListNode<BeltInventoryElement> previous = items.AddBefore(node, new BeltInventoryElement(node.Value.itemId, node.Value.distance, 1));
+                LinkedListNode<BeltInventoryElement> previous = items.AddBefore(node, new BeltInventoryElement(node.Value.item, node.Value.distance, 1));
                 node.Value.count--;
                 return previous;
             }

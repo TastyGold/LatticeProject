@@ -2,24 +2,24 @@
 {
     internal class BeltInventoryElement
     {
-        public int itemId;
+        public GameItem item;
         public float distance;
         public int count;
 
-        public bool ItemDistanceMatches(int itemId, float distance)
+        public bool ItemDistanceMatches(GameItem item, float distance)
         {
-            return this.itemId == itemId
+            return this.item == item
                 && this.distance == distance;
         }
 
         public override string? ToString()
         {
-            return $"id={itemId}, dist={distance}, count={count}";
+            return $"id={item}, dist={distance}, count={count}";
         }
 
-        public BeltInventoryElement(int itemId, float distance, int count)
+        public BeltInventoryElement(GameItem item, float distance, int count)
         {
-            this.itemId = itemId;
+            this.item = item;
             this.distance = distance;
             this.count = count;
         }
