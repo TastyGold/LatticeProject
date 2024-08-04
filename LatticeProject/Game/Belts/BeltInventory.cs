@@ -135,9 +135,39 @@ namespace LatticeProject.Game.Belts
             Count--;
         }
 
-        public void MoveItems(float distance, float endOfConveyor)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="distance"></param>
+        /// <param name="endOfBeltPadding"></param>
+        /// <returns>The GameItem to transfer to the associated deposit inventory</returns>
+        public GameItemWithOffset? MoveItems(float distance, float endOfBeltPadding, bool canTransfer)
         {
             float remainingDistance = distance;
+
+            //item transferring
+            //note: guarantees the while loop will be skipped
+            GameItemWithOffset? transferItem = null;
+            if (canTransfer && items.First is not null)
+            {
+                ItemToMove = items.First;
+                if (ItemToMove.Value.count != 1)
+                {
+                    SeparateFirstItemFromElement(ItemToMove);
+                }
+
+                items.First.Value.distance -= remainingDistance;
+                remainingDistance = 0;
+
+                if (items.First.Value.distance < GameRules.minItemDistance)
+                {
+                    transferItem = new GameItemWithOffset(
+                        new GameItem(items.First.Value.itemId),
+                        -items.First.Value.distance
+                        );
+                    RemoveTailingItem();
+                }
+            }
 
             //terminates when all remainingDistance has been used OR when all items are stationary
             while (remainingDistance > 0 && ItemToMove is not null)
@@ -177,6 +207,8 @@ namespace LatticeProject.Game.Belts
 
             //updates leading distance based on how much the items on the belt moved
             LeadingDistance += distance - remainingDistance;
+
+            return transferItem;
         }
 
         /// <summary>Attempts to combine the counts of two RLE elements if they have the same id and distance.</summary>

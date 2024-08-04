@@ -63,7 +63,9 @@ namespace LatticeProject.Core
                 simulationSpeed *= Raylib.GetMouseWheelMove() > 0 ? 1.2f : 1 / 1.2f;
             }
 
-            mainChunk.Update(Raylib.GetFrameTime() * simulationSpeed);
+            if (Raylib.IsKeyPressed(KeyboardKey.P)) mainChunk.Update(GameRules.minItemDistance * 2);
+
+            mainChunk.Update(Math.Min(1/60f, Raylib.GetFrameTime()) * simulationSpeed);
 
             mainCam.UpdateCamera();
         }

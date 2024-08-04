@@ -11,6 +11,7 @@
             set => inventory.TotalBeltLength = value;
         }
 
+        //ItemReciever things
         public GameItem? RecievedItem { get; private set; }
         public float RecievedItemOffset { get; private set; }
 
@@ -21,6 +22,7 @@
             if (RecievedItem is null) return false;
 
             inventory.AddToHead(RecievedItem.color, RecievedItemOffset);
+            RecievedItem = null;
             return true;
         }
 
@@ -42,8 +44,9 @@
 
         public void UpdateInventory(float deltaTime)
         {
-            depositInventory = this;
-            inventory.MoveItems(deltaTime, GameRules.minItemDistance - depositInventory.AvailableDistance);
+            depositInventory = this; //temporary
+
+            //manually add/remove items
             if (inventory.CanRecieveItem() && Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.I))
             {
                 inventory.AddToHead(1, -GameRules.minItemDistance);
@@ -53,7 +56,14 @@
                 inventory.RemoveTailingItem();
             }
 
-
+            //actual belt logic
+            bool canTransfer = depositInventory.AvailableDistance >= 0 && depositInventory.RecievedItem is null;
+            //note: head of conveyor corresponds to LeadingDistance of -minItemDistance;
+            GameItemWithOffset? transferItem = inventory.MoveItems(deltaTime, GameRules.minItemDistance - depositInventory.AvailableDistance, canTransfer);
+            if (transferItem is not null)
+            {
+                depositInventory.TryRecieveItem(transferItem.item, transferItem.offset);
+            }
         }
     }
 }
