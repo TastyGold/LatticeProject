@@ -1,6 +1,6 @@
 ﻿namespace LatticeProject.Game
 {
-    internal class BuildingInventory : IItemInventory
+    internal class BuildingInventory
     {
         public bool CanRecieveItem(GameItem item)
         {

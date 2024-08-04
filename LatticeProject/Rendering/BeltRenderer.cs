@@ -11,7 +11,7 @@ namespace LatticeProject.Rendering
         private static Color beltColor = new Color(33, 38, 45, 255);
         private static Color beltOutlineColor = new Color(48, 54, 61, 255);
         public static float beltOutlineWidth = 0.1f;
-        public static float beltWidth = 0.5f;
+        public static float beltWidth = 0.4f;
 
         public static void DrawBeltSegment(Lattice lattice, BeltSegment segment, bool outline, int colorIndex)
         {

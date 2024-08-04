@@ -25,7 +25,7 @@
                 while (inv.items.Count > 1)
                 {
                     Console.Clear();
-                    inv.MoveItems(0.0002f);
+                    inv.MoveItems(0.0002f, GameRules.minItemDistance);
                     Console.WriteLine(inv.GetInventoryDescription());
                 }
                 inv.RemoveTailingItem();

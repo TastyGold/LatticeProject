@@ -8,6 +8,10 @@
         {
             foreach (BeltSegment segment in beltSegments)
             {
+                segment.inventoryManager.PrepareUpdate(deltaTime);
+            }
+            foreach (BeltSegment segment in beltSegments)
+            {
                 segment.inventoryManager.UpdateInventory(deltaTime);
             }
         }

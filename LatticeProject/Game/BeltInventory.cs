@@ -135,7 +135,7 @@ namespace LatticeProject.Game
             Count--;
         }
 
-        public void MoveItems(float distance)
+        public void MoveItems(float distance, float endOfConveyor)
         {
             float remainingDistance = distance;
 

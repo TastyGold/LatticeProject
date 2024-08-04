@@ -1,9 +1,9 @@
 ﻿namespace LatticeProject.Game
 {
-    internal class BeltInventoryManager : IItemInventory
+    internal class BeltInventoryManager : IItemReciever
     {
         public BeltInventory inventory = new BeltInventory();
-        public IItemInventory? depositInventory;
+        public IItemReciever? depositInventory;
 
         public int TotalBeltLength
         {
@@ -11,20 +11,39 @@
             set => inventory.TotalBeltLength = value;
         }
 
-        public bool CanRecieveItem(GameItem item)
+        public GameItem? RecievedItem { get; private set; }
+        public float RecievedItemOffset { get; private set; }
+
+        public float AvailableDistance { get; private set; }
+
+        public bool TryAcceptRecievedItem()
         {
-            return inventory.CanRecieveItem();
+            if (RecievedItem is null) return false;
+
+            inventory.AddToHead(RecievedItem.color, RecievedItemOffset);
+            return true;
         }
 
-        public void RecieveItem(GameItem item, float offset)
+        public bool TryRecieveItem(GameItem item, float offset)
         {
-            inventory.AddToHead(item.color, offset);
+            if (RecievedItem is not null) return false;
+
+            RecievedItem = item;
+            RecievedItemOffset = offset;
+            return true;
+        }
+
+        public void PrepareUpdate(float deltaTime)
+        {
+            TryAcceptRecievedItem();
+
+            AvailableDistance = inventory.LeadingDistance + deltaTime;
         }
 
         public void UpdateInventory(float deltaTime)
         {
             depositInventory = this;
-            inventory.MoveItems(deltaTime);
+            inventory.MoveItems(deltaTime, GameRules.minItemDistance - depositInventory.AvailableDistance);
             if (inventory.CanRecieveItem() && Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.I))
             {
                 inventory.AddToHead(1, -GameRules.minItemDistance);
@@ -34,18 +53,7 @@
                 inventory.RemoveTailingItem();
             }
 
-            if (inventory.items.First?.Value.distance == GameRules.minItemDistance && depositInventory is not null)
-            {
-                GameItem itemToTransfer = new GameItem(inventory.items.First.Value.itemId);
-                if (depositInventory.CanRecieveItem(itemToTransfer))
-                {
-                    // need to do this more effectively (need to change the offset on recieve item)
-                    // will need to change moveItems() method to fix this
 
-                    depositInventory.RecieveItem(itemToTransfer, -GameRules.minItemDistance);
-                    inventory.RemoveTailingItem();
-                }
-            }
         }
     }
 }
