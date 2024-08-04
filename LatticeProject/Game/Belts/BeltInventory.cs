@@ -1,7 +1,7 @@
 ﻿using LatticeProject.Utility;
 using System.Collections;
 
-namespace LatticeProject.Game
+namespace LatticeProject.Game.Belts
 {
     internal class BeltInventory : IEnumerable<BeltInventoryElement>
     {

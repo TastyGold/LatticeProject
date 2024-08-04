@@ -1,4 +1,5 @@
 ﻿using LatticeProject.Game;
+using LatticeProject.Game.Belts;
 using LatticeProject.Lattices;
 using Raylib_cs;
 using System.Numerics;

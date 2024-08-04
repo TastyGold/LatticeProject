@@ -1,4 +1,6 @@
-﻿namespace LatticeProject.Game
+﻿using LatticeProject.Game.Belts;
+
+namespace LatticeProject.Game
 {
     internal class WorldChunk
     {

@@ -2,7 +2,7 @@
 using LatticeProject.Utility;
 using System.Numerics;
 
-namespace LatticeProject.Game
+namespace LatticeProject.Game.Belts
 {
     internal class BeltSegment
     {
@@ -79,8 +79,8 @@ namespace LatticeProject.Game
             value /= pieceLengths[vertex];
 
             return Vector2.Lerp(
-                lattice.GetCartesianCoords(vertices[vertex]), 
-                lattice.GetCartesianCoords(vertices[vertex + 1]), 
+                lattice.GetCartesianCoords(vertices[vertex]),
+                lattice.GetCartesianCoords(vertices[vertex + 1]),
                 value);
         }
 

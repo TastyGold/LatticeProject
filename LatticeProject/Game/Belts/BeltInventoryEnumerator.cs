@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
-namespace LatticeProject.Game
+namespace LatticeProject.Game.Belts
 {
     internal class BeltInventoryEnumerator : IEnumerator<BeltInventoryElement>
     {

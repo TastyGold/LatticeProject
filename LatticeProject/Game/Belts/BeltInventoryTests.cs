@@ -1,4 +1,4 @@
-﻿namespace LatticeProject.Game
+﻿namespace LatticeProject.Game.Belts
 {
     internal static class BeltInventoryTests
     {
