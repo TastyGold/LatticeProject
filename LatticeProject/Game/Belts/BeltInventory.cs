@@ -87,24 +87,6 @@ namespace LatticeProject.Game.Belts
             Count++; //update the inventory item count
         }
 
-        public float CalculateSumOfDistances()
-        {
-            float sum = 0;
-            foreach (BeltInventoryElement element in items)
-            {
-                sum += element.distance * element.count;
-            }
-            return sum;
-        }
-        public float GetLeadingDistanceFromItems()
-        {
-            return TotalBeltLength - CalculateSumOfDistances();
-        }
-        public float CalculateLeadingDistanceError()
-        {
-            return LeadingDistance - GetLeadingDistanceFromItems();
-        }
-
         /// <summary> Removes the item closest to the tail of the belt from the inventory.</summary>
         public void RemoveTailingItem()
         {
@@ -265,6 +247,24 @@ namespace LatticeProject.Game.Belts
             firstInNode.Value.distance = distance;
 
             return firstInNode;
+        }
+
+        public float CalculateSumOfDistances()
+        {
+            float sum = 0;
+            foreach (BeltInventoryElement element in items)
+            {
+                sum += element.distance * element.count;
+            }
+            return sum;
+        }
+        public float GetLeadingDistanceFromItems()
+        {
+            return TotalBeltLength - CalculateSumOfDistances();
+        }
+        public float CalculateLeadingDistanceError()
+        {
+            return LeadingDistance - GetLeadingDistanceFromItems();
         }
 
         public string GetInventoryDescription()
