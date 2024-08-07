@@ -1,5 +1,4 @@
-﻿using LatticeProject.Game;
-using LatticeProject.Game.Belts;
+﻿using LatticeProject.Game.Belts;
 using LatticeProject.Lattices;
 using Raylib_cs;
 using System.Numerics;
@@ -31,29 +30,6 @@ namespace LatticeProject.Rendering
                 {
                     Raylib.DrawCircleV(end * scale, width / 2, col);
                 }
-            }
-        }
-
-        public static void DrawBeltItems(Lattice lattice, BeltSegment segment)
-        {
-            if (segment.inventoryManager.inventory.items.First is null) return;
-
-            BeltTraverser traverser = segment.GetTraverser();
-            traverser.ResetEnd();
-            bool firstItem = true;
-
-            foreach (BeltInventoryElement element in segment.inventoryManager.inventory)
-            {
-                traverser.AdvanceReverse(element.distance);
-
-                if (firstItem == true)
-                {
-                    //hacky method of aligning minItemDistance from tail to be exactly on tail
-                    traverser.Advance(GameRules.minItemDistance);
-                    firstItem = false;
-                }
-
-                Raylib.DrawCircleV(scale * segment.GetPositionAlongPiece(lattice, traverser.CurrentVertex, traverser.PositionAlongPiece), scale / 5, Colors.colors[element.item.color == -1 ? 0 : element.item.color % Colors.numColors]);
             }
         }
     }

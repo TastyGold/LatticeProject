@@ -1,4 +1,5 @@
 ﻿using LatticeProject.Game;
+using LatticeProject.Game.Belts;
 using LatticeProject.Lattices;
 
 namespace LatticeProject.Rendering
@@ -7,14 +8,9 @@ namespace LatticeProject.Rendering
     {
         public static void DrawAllBeltSegments(Lattice lattice, WorldChunk chunk)
         {
-            for (int j = 0; j < 2; j++)
-            {
-                for (int i = 0; i < chunk.beltSegments.Count; i++)
-                {
-                    BeltRenderer.DrawBeltSegment(lattice, chunk.beltSegments[i], j == 0, i);
-                    BeltRenderer.DrawBeltItems(lattice, chunk.beltSegments[i]);
-                }
-            }
+            chunk.beltSegments.ForEach((belt) => BeltRenderer.DrawBeltSegment(lattice, belt, true, 0));
+            chunk.beltSegments.ForEach((belt) => BeltRenderer.DrawBeltSegment(lattice, belt, false, 0));
+            chunk.beltSegments.ForEach((belt) => BeltItemRenderer.DrawBeltItems(lattice, belt));
         }
     }
 }

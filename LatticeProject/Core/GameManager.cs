@@ -22,10 +22,12 @@ namespace LatticeProject.Core
 
         static float simulationSpeed = 3;
 
+        static bool frameAdvance = false;
+
         public static void Begin()
         {
             Raylib.InitWindow(1600, 900, "Hello World");
-            Raylib.SetTargetFPS(60);
+            Raylib.SetTargetFPS(120);
             RenderConfig.scale = 150;
         }
 
@@ -63,9 +65,20 @@ namespace LatticeProject.Core
                 simulationSpeed *= Raylib.GetMouseWheelMove() > 0 ? 1.2f : 1 / 1.2f;
             }
 
-            if (Raylib.IsKeyPressed(KeyboardKey.P)) mainChunk.Update(GameRules.minItemDistance * 2);
+            if (Raylib.IsKeyPressed((KeyboardKey)91)) frameAdvance = !frameAdvance;
 
-            mainChunk.Update(Math.Min(1/60f, Raylib.GetFrameTime()) * simulationSpeed);
+            if (Raylib.IsKeyPressed(KeyboardKey.P))
+            {
+                mainChunk.Update(GameRules.minItemDistance * 10);
+            }
+            if (Raylib.IsKeyPressed((KeyboardKey)93))
+            {
+                mainChunk.Update(1 / 60f * simulationSpeed);
+            }
+            else if (!frameAdvance)
+            {
+                mainChunk.Update(Math.Min(1 / 60f, Raylib.GetFrameTime()) * simulationSpeed);
+            }
 
             mainCam.UpdateCamera();
         }
