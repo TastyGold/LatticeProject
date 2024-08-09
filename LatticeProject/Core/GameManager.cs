@@ -12,6 +12,7 @@ namespace LatticeProject.Core
     {
         static Lattice mainLattice = new HexagonLattice();
         static WorldChunk mainChunk = new WorldChunk();
+        static WorldTerrainChunk terrainChunk = new WorldTerrainChunk();
         static LatticeCamera mainCam = new LatticeCamera(Vector2.Zero, 1, 0, new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2));
         
         static Vector2 mousePosition = new Vector2();
@@ -19,6 +20,7 @@ namespace LatticeProject.Core
         static VecInt2 closestVertex = VecInt2.Zero;
         static VecInt2[] linePoints = new VecInt2[0];
         public static int nextColor = 0;
+        public static bool terrainMode = false;
 
         static float simulationSpeed = 3;
 
@@ -39,23 +41,6 @@ namespace LatticeProject.Core
             closestVertex = mainLattice.GetClosestVertex(mousePosition / RenderConfig.scale);
 
             //linePoints = mainLattice.GetLinePoints(VecInt2.Zero, closestVertex);
-
-            if (Raylib.IsMouseButtonPressed(0))
-            {
-                mainChunk.beltSegments.Add(new BeltSegment());
-                mainChunk.beltSegments[^1].vertices.Add(lastClosestVertex);
-            }
-
-            if (closestVertex != lastClosestVertex && Raylib.IsMouseButtonDown(0))
-            {
-                mainChunk.beltSegments[^1].vertices.Add(closestVertex);
-            }
-
-            if (Raylib.IsMouseButtonReleased(0))
-            {
-                mainChunk.beltSegments[^1].SimplifyVertices(mainLattice);
-                mainChunk.beltSegments[^1].UpdateLengths(mainLattice);
-            }
 
             if (Raylib.IsKeyPressed(KeyboardKey.Left)) mainCam.camera.Rotation -= 30;
             if (Raylib.IsKeyPressed(KeyboardKey.Right)) mainCam.camera.Rotation += 30;
@@ -79,6 +64,47 @@ namespace LatticeProject.Core
             {
                 mainChunk.Update(Math.Min(1 / 60f, Raylib.GetFrameTime()) * simulationSpeed);
             }
+            if (Raylib.IsKeyPressed(KeyboardKey.T)) terrainMode = !terrainMode;
+
+            if (terrainMode)
+            {
+                if (closestVertex.x > 0 && closestVertex.x < 255 && closestVertex.y > 0 && closestVertex.y < 255)
+                {
+                    if (Raylib.IsMouseButtonDown(MouseButton.Left))
+                    {
+                        for (int i = 0; i < LatticeMath.hexNeighbours.Length; i++)
+                        {
+                            terrainChunk.SetTile(closestVertex.x + LatticeMath.hexNeighbours[i].x, closestVertex.y + LatticeMath.hexNeighbours[i].y, true);
+                        }
+                    }
+                    if (Raylib.IsMouseButtonDown(MouseButton.Right))
+                    {
+                        for (int i = 0; i < LatticeMath.hexNeighbours.Length; i++)
+                        {
+                            terrainChunk.SetTile(closestVertex.x + LatticeMath.hexNeighbours[i].x, closestVertex.y + LatticeMath.hexNeighbours[i].y, false);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (Raylib.IsMouseButtonPressed(0))
+                {
+                    mainChunk.beltSegments.Add(new BeltSegment());
+                    mainChunk.beltSegments[^1].vertices.Add(lastClosestVertex);
+                }
+
+                if (closestVertex != lastClosestVertex && Raylib.IsMouseButtonDown(0))
+                {
+                    mainChunk.beltSegments[^1].vertices.Add(closestVertex);
+                }
+
+                if (Raylib.IsMouseButtonReleased(0))
+                {
+                    mainChunk.beltSegments[^1].SimplifyVertices(mainLattice);
+                    mainChunk.beltSegments[^1].UpdateLengths(mainLattice);
+                }
+            }
 
             mainCam.UpdateCamera();
         }
@@ -99,11 +125,13 @@ namespace LatticeProject.Core
             //BuildingRenderer.DrawBuilding(mainLattice, new Building() { Position = closestVertex }, Color.Gray);
             LatticeRenderer.DrawVertices(mainLattice, linePoints, 0.25f, Color.Blue);
             LatticeRenderer.HighlightNeighbours(mainLattice, closestVertex);
+            WorldTerrainRenderer.DrawTerrainOutline(mainLattice, terrainChunk);
+            WorldTerrainRenderer.DrawTerrainChunk(mainLattice, terrainChunk);
 
             Raylib.EndMode2D();
 
             Raylib.DrawFPS(10, 10);
-            Raylib.DrawText("Simulation speed = " + simulationSpeed.ToString()[..Math.Min(simulationSpeed.ToString().Length, 5)] + "x", 10, 30, 20, Color.LightGray);
+            Raylib.DrawText("Simulation speed = " + simulationSpeed.ToString()[..Math.Min(simulationSpeed.ToString().Length, 5)] + "x, TerrainMode: " + terrainMode, 10, 30, 20, Color.LightGray);
             if (mainChunk.beltSegments.Count > 0)
             {
                 BeltInventory inv = mainChunk.beltSegments[^1].inventoryManager.inventory;

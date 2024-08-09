@@ -13,15 +13,21 @@ namespace LatticeProject.Rendering
         public static float beltOutlineWidth = 0.1f;
         public static float beltWidth = 0.4f;
 
-        public static void DrawBeltSegment(Lattice lattice, BeltSegment segment, bool outline, int colorIndex)
+        public static void DrawBeltSegment(Lattice lattice, BeltSegment segment)
+        {
+            //outline
+            DrawBeltPieces(lattice, segment, (beltWidth + beltOutlineWidth) * scale, beltOutlineColor);
+
+            //belt
+            DrawBeltPieces(lattice, segment, beltWidth * scale, beltColor);
+        }
+
+        public static void DrawBeltPieces(Lattice lattice, BeltSegment segment, float width, Color col)
         {
             for (int i = 0; i < segment.vertices.Count - 1; i++)
             {
                 Vector2 start = lattice.GetCartesianCoords(segment.vertices[i]);
                 Vector2 end = lattice.GetCartesianCoords(segment.vertices[i + 1]);
-
-                float width = !outline ? scale * beltWidth : scale * (beltWidth + beltOutlineWidth);
-                Color col = outline ? beltOutlineColor : beltColor; // Colors.colors[i % Colors.numColors];
 
                 Raylib.DrawLineEx(start * scale, end * scale, width, col);
                 Raylib.DrawCircleV(start * scale, width / 2, col);
