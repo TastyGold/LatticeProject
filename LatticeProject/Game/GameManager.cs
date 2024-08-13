@@ -1,4 +1,5 @@
 ﻿using LatticeProject.Game.Belts;
+using LatticeProject.Lattices;
 using LatticeProject.Rendering;
 using LatticeProject.Utility;
 using Raylib_cs;
@@ -7,7 +8,9 @@ namespace LatticeProject.Game
 {
     internal static class GameManager
     {
-        static readonly GameState game = new GameState();
+        static readonly GameState game = new GameState(
+            lattice: new HexagonLattice()
+            );
 
         public static void Run()
         {

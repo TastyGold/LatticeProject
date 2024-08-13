@@ -1,4 +1,5 @@
 ﻿using LatticeProject.Utility;
+using Raylib_cs;
 using System.Numerics;
 
 namespace LatticeProject.Lattices
@@ -13,6 +14,15 @@ namespace LatticeProject.Lattices
             new VecInt2(0, -1),
         };
         public override VecInt2[] GetNeighbourOffsets() => nOffsets;
+
+        private static readonly Vector2[] gOffsets =
+        {
+            new Vector2(-0.5f, 0.5f),
+            new Vector2(-0.5f, -0.5f),
+            new Vector2(0.5f, -0.5f)
+        };
+        public override Vector2[] GetGridPieceOffsets() => gOffsets;
+
         public override int GetDirectionIndex(VecInt2 a, VecInt2 b)
         {
             VecInt2 dv = b - a;
@@ -46,6 +56,11 @@ namespace LatticeProject.Lattices
         public override bool IsValidDirection(VecInt2 a, VecInt2 b)
         {
             throw new NotImplementedException();
+        }
+
+        public override void HighlightCell(VecInt2 vertex, float scale, Color col)
+        {
+            Raylib.DrawRectangleV((GetCartesianCoords(vertex) - new Vector2(0.5f, 0.5f)) * scale, Vector2.One * scale, col);
         }
     }
 }

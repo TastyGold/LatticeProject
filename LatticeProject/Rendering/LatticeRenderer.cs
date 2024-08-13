@@ -42,18 +42,32 @@ namespace LatticeProject.Rendering
             }
         }
 
-        public static void DrawHexagonalGrid(Lattice lattice, float lineWidth, int minX, int minY, int maxX, int maxY)
+        public static void DrawGridPiece(Lattice lattice, float lineWidth, int x, int y)
+        {
+            Vector2 center = lattice.GetCartesianCoords(x, y);
+            Vector2[] gridPieceOffsets = lattice.GetGridPieceOffsets();
+            for (int i = 0; i < gridPieceOffsets.Length - 1; i++)
+            {
+                Raylib.DrawLineEx(
+                    (center + gridPieceOffsets[i]) * scale,
+                    (center + gridPieceOffsets[i + 1]) * scale,
+                    lineWidth, new Color(33, 38, 45, 255)
+                    );
+            }
+        }
+
+        public static void DrawLatticeGrid(Lattice lattice, float lineWidth, int minX, int minY, int maxX, int maxY)
         {
             for (int x = minX; x <= maxX; x++)
             {
                 for (int y = minY; y <= maxY; y++)
                 {
-                    DrawHexGridPiece(lattice, lineWidth, x, y);
+                    DrawGridPiece(lattice, lineWidth, x, y);
                 }
             }
         }
 
-        public static void DrawHexagonalGrid(Lattice lattice, Vector2 cameraPosition, float cameraZoom)
+        public static void DrawLatticeGrid(Lattice lattice, Vector2 cameraPosition, float cameraZoom)
         {
             Vector2 halfScreenSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()) / cameraZoom / 2;
             Vector2 topLeft = cameraPosition - halfScreenSize;
@@ -69,24 +83,31 @@ namespace LatticeProject.Rendering
             min.x -= (int)(height * sqrt3_3);
             max.x += (int)(height * sqrt3_3);
 
-            DrawHexagonalGrid(lattice, 2 / cameraZoom, min.x, min.y, max.x, max.y);
+            DrawLatticeGrid(lattice, 2 / cameraZoom, min.x, min.y, max.x, max.y);
         }
 
-        public static void DrawHexGridPiece(Lattice lattice, float lineWidth, int x, int y)
+        public static void HighlightCell(Lattice lattice, VecInt2 vertex, Color col)
         {
-            Vector2 center = lattice.GetCartesianCoords(x, y);
-            Raylib.DrawLineEx(
-                (center - new Vector2(0.5f, sqrt3_2 - sqrt3_3)) * scale,
-                (center - new Vector2(0, sqrt3_3)) * scale,
-                lineWidth, new Color(33, 38, 45, 255));
-            Raylib.DrawLineEx(
-                (center - new Vector2(-0.5f, sqrt3_2 - sqrt3_3)) * scale,
-                (center - new Vector2(0, sqrt3_3)) * scale,
-                lineWidth, new Color(33, 38, 45, 255));
-            Raylib.DrawLineEx(
-                (center + new Vector2(-0.5f, sqrt3_2 - sqrt3_3)) * scale,
-                (center - new Vector2(0.5f, sqrt3_2 - sqrt3_3)) * scale,
-                lineWidth, new Color(33, 38, 45, 255));
+            lattice.HighlightCell(vertex, scale, col);
+        }
+
+        public static void DrawCellOutline(Lattice lattice, VecInt2 vertex, float lineWidth, Color col)
+        {
+            Vector2 center = lattice.GetCartesianCoords(vertex);
+            Vector2[] gridPieceOffsets = lattice.GetGridPieceOffsets();
+            for (int i = 0; i < gridPieceOffsets.Length - 1; i++)
+            {
+                Raylib.DrawLineEx(
+                    (center + gridPieceOffsets[i]) * scale,
+                    (center + gridPieceOffsets[i + 1]) * scale,
+                    lineWidth, col
+                    ); 
+                Raylib.DrawLineEx(
+                    (center - gridPieceOffsets[i]) * scale,
+                    (center - gridPieceOffsets[i + 1]) * scale,
+                    lineWidth, col
+                    );
+            }
         }
     }
 }

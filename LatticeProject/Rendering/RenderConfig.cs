@@ -2,6 +2,6 @@
 {
     internal static class RenderConfig
     {
-        public static float scale = 1;
+        public static float scale = 10;
     }
 }

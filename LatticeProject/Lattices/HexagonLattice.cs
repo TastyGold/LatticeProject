@@ -1,13 +1,22 @@
 ﻿using LatticeProject.Utility;
+using Raylib_cs;
 using System.Numerics;
-using static LatticeProject.Utility.LatticeMath;
 
 namespace LatticeProject.Lattices
 {
     internal class HexagonLattice : Lattice
     {
-        private static readonly VecInt2[] nOffsets = hexNeighbours;
+        private static readonly VecInt2[] nOffsets = LatticeMath.hexNeighbours;
         public override VecInt2[] GetNeighbourOffsets() => nOffsets;
+
+        private static readonly Vector2[] gOffsets =
+        {
+            new Vector2(-0.5f, LatticeMath.sqrt3_2 - LatticeMath.sqrt3_3),
+            new Vector2(-0.5f, LatticeMath.sqrt3_3 - LatticeMath.sqrt3_2),
+            new Vector2(0, -LatticeMath.sqrt3_3),
+            new Vector2(0.5f, LatticeMath.sqrt3_3 - LatticeMath.sqrt3_2)
+        };
+        public override Vector2[] GetGridPieceOffsets() => gOffsets;
 
         public override bool IsValidDirection(VecInt2 a, VecInt2 b)
         {
@@ -29,7 +38,7 @@ namespace LatticeProject.Lattices
 
         public override Vector2 GetCartesianCoords(int x, int y)
         {
-            return new Vector2(x + y / 2f, y * sqrt3_2);
+            return new Vector2(x + y / 2f, y * LatticeMath.sqrt3_2);
         }
         public override VecInt2 GetClosestVertex(Vector2 coords)
         {
@@ -39,7 +48,7 @@ namespace LatticeProject.Lattices
             //Algorithm used:
             //https://www.redblobgames.com/grids/hexagons/more-pixel-to-hex.html#chris-cox
 
-            double t = sqrt3 * y + 1;           // scaled y, plus phase
+            double t = LatticeMath.sqrt3 * y + 1;           // scaled y, plus phase
             double temp1 = Math.Floor(t + x);   // (y+x) diagonal, this calc needs floor
             double temp2 = t - x;               // (y-x) diagonal, no floor needed
             double temp3 = 2 * x + 1;           // scaled horizontal, no floor needed, needs +1 to get correct phase
@@ -76,12 +85,17 @@ namespace LatticeProject.Lattices
             VecInt2[] points = new VecInt2[distance + 1];
             for (int i = 0; i < distance; i++)
             {
-                points[i] = GetClosestVertex(position + epsilon);
+                points[i] = GetClosestVertex(position + LatticeMath.epsilon);
                 position += step;
             }
             points[^1] = GetClosestVertex(position);
 
             return points;
+        }
+
+        public override void HighlightCell(VecInt2 vertex, float scale, Color col)
+        {
+            Raylib.DrawPoly(GetCartesianCoords(vertex) * scale, 6, scale * LatticeMath.sqrt3_3, 30, col);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace LatticeProject.Game
 {
     internal class GameState
     {
-        public Lattice mainLattice = new HexagonLattice();
+        public Lattice mainLattice;
         public WorldChunk mainChunk = new WorldChunk();
         public LatticeCamera mainCam = new LatticeCamera(Vector2.Zero, 150f/RenderConfig.scale, 0, new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2));
 
@@ -18,5 +18,10 @@ namespace LatticeProject.Game
 
         public float simulationSpeed = 3;
         public bool frameAdvance = false;
+
+        public GameState(Lattice lattice)
+        {
+            mainLattice = lattice;
+        }
     }
 }

@@ -7,12 +7,13 @@ namespace LatticeProject.Rendering
     {
         public static void Draw(GameState game)
         {
-            LatticeRenderer.DrawHexagonalGrid(game.mainLattice, game.mainCam.Target, game.mainCam.Zoom);
+            LatticeRenderer.HighlightCell(game.mainLattice, game.closestVertex, new Color(11, 25, 44, 255));
+
+            LatticeRenderer.DrawLatticeGrid(game.mainLattice, game.mainCam.Target, game.mainCam.Zoom);
 
             WorldChunkRenderer.DrawAllBeltSegments(game.mainLattice, game.mainChunk);
 
-            LatticeRenderer.DrawVertex(game.mainLattice, game.closestVertex, 0.25f, Color.DarkGray);
-            LatticeRenderer.HighlightNeighbours(game.mainLattice, game.closestVertex);
+            LatticeRenderer.DrawCellOutline(game.mainLattice, game.closestVertex, 3 / game.mainCam.Zoom, new Color(57, 76, 102, 255));
         }
     }
 }
