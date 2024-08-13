@@ -2,7 +2,7 @@
 using Raylib_cs;
 using System.Numerics;
 
-namespace LatticeProject.Core
+namespace LatticeProject.Game
 {
     public class LatticeCamera
     {

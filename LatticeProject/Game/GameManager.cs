@@ -36,8 +36,6 @@ namespace LatticeProject.Game
             game.mousePosition = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), game.mainCam.camera);
             game.closestVertex = game.mainLattice.GetClosestVertex(game.mousePosition / RenderConfig.scale);
 
-            //linePoints = mainLattice.GetLinePoints(VecInt2.Zero, closestVertex);
-
             if (Raylib.IsKeyPressed(KeyboardKey.Left)) game.mainCam.camera.Rotation -= 30;
             if (Raylib.IsKeyPressed(KeyboardKey.Right)) game.mainCam.camera.Rotation += 30;
 
@@ -60,46 +58,22 @@ namespace LatticeProject.Game
             {
                 game.mainChunk.Update(Math.Min(1 / 60f, Raylib.GetFrameTime()) * game.simulationSpeed);
             }
-            if (Raylib.IsKeyPressed(KeyboardKey.T)) game.terrainMode = !game.terrainMode;
 
-            if (game.terrainMode)
+            if (Raylib.IsMouseButtonPressed(0))
             {
-                if (game.closestVertex.x > 0 && game.closestVertex.x < 255 && game.closestVertex.y > 0 && game.closestVertex.y < 255)
-                {
-                    if (Raylib.IsMouseButtonDown(MouseButton.Left))
-                    {
-                        for (int i = 0; i < LatticeMath.hexNeighbours.Length; i++)
-                        {
-                            game.terrainChunk.SetTile(game.closestVertex.x + LatticeMath.hexNeighbours[i].x, game.closestVertex.y + LatticeMath.hexNeighbours[i].y, true);
-                        }
-                    }
-                    if (Raylib.IsMouseButtonDown(MouseButton.Right))
-                    {
-                        for (int i = 0; i < LatticeMath.hexNeighbours.Length; i++)
-                        {
-                            game.terrainChunk.SetTile(game.closestVertex.x + LatticeMath.hexNeighbours[i].x, game.closestVertex.y + LatticeMath.hexNeighbours[i].y, false);
-                        }
-                    }
-                }
+                game.mainChunk.beltSegments.Add(new BeltSegment());
+                game.mainChunk.beltSegments[^1].vertices.Add(game.lastClosestVertex);
             }
-            else
+
+            if (game.closestVertex != game.lastClosestVertex && Raylib.IsMouseButtonDown(0))
             {
-                if (Raylib.IsMouseButtonPressed(0))
-                {
-                    game.mainChunk.beltSegments.Add(new BeltSegment());
-                    game.mainChunk.beltSegments[^1].vertices.Add(game.lastClosestVertex);
-                }
+                game.mainChunk.beltSegments[^1].vertices.Add(game.closestVertex);
+            }
 
-                if (game.closestVertex != game.lastClosestVertex && Raylib.IsMouseButtonDown(0))
-                {
-                    game.mainChunk.beltSegments[^1].vertices.Add(game.closestVertex);
-                }
-
-                if (Raylib.IsMouseButtonReleased(0))
-                {
-                    game.mainChunk.beltSegments[^1].SimplifyVertices(game.mainLattice);
-                    game.mainChunk.beltSegments[^1].UpdateLengths(game.mainLattice);
-                }
+            if (Raylib.IsMouseButtonReleased(0))
+            {
+                game.mainChunk.beltSegments[^1].SimplifyVertices(game.mainLattice);
+                game.mainChunk.beltSegments[^1].UpdateLengths(game.mainLattice);
             }
 
             game.mainCam.UpdateCamera();

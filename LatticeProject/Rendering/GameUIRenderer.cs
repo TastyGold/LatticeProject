@@ -9,7 +9,7 @@ namespace LatticeProject.Rendering
         public static void Draw(GameState game)
         {
             Raylib.DrawFPS(10, 10);
-            Raylib.DrawText("Simulation speed = " + game.simulationSpeed.ToString()[..Math.Min(game.simulationSpeed.ToString().Length, 5)] + "x, TerrainMode: " + game.terrainMode, 10, 30, 20, Color.LightGray);
+            Raylib.DrawText("Simulation speed = " + game.simulationSpeed.ToString()[..Math.Min(game.simulationSpeed.ToString().Length, 5)], 10, 30, 20, Color.LightGray);
             if (game.mainChunk.beltSegments.Count > 0)
             {
                 BeltInventory inv = game.mainChunk.beltSegments[^1].inventoryManager.inventory;
