@@ -278,10 +278,10 @@ namespace LatticeProject.Game.Belts
             foreach (BeltInventoryElement item in items)
             {
                 output += $"i={i}, " + item.ToString() + '\n';
-                if (item == ItemToMove?.Value) itemToMoveIndex = i;
+                if (ReferenceEquals(item, ItemToMove?.Value)) itemToMoveIndex = i;
                 i++;
             }
-            output += $"itemToMove={(itemToMoveIndex != -1 ? itemToMoveIndex : "null")}\n";
+            output += $"itemToMoveIndex={(itemToMoveIndex != -1 ? itemToMoveIndex : "null")}\n";
 
             return output;
         }
