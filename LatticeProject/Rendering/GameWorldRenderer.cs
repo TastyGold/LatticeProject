@@ -13,7 +13,7 @@ namespace LatticeProject.Rendering
 
             WorldChunkRenderer.DrawAllBeltSegments(game.mainLattice, game.mainChunk);
 
-            LatticeRenderer.DrawCellOutline(game.mainLattice, game.closestVertex, 3 / game.mainCam.Zoom, new Color(57, 76, 102, 255));
+            LatticeRenderer.DrawCellOutline(game.mainLattice, game.closestVertex, 4 / game.mainCam.Zoom, new Color(57, 76, 102, 255));
         }
     }
 }
