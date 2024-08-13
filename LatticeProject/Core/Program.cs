@@ -8,15 +8,7 @@ namespace LatticeProject.Core
     {
         public static void Main()
         {
-            GameManager.Begin();
-
-            while (!Raylib.WindowShouldClose())
-            {
-                GameManager.Update();
-                GameManager.Draw();
-            }
-
-            GameManager.End();
+            GameManager.Run();
         }
     }
 }
