@@ -117,6 +117,9 @@ namespace LatticeProject.Game
                 Rotation = rotation,
                 Offset = offset,
             };
+            targetZoom = zoom;
+            maxZoom *= zoom;
+            minZoom *= zoom;
         }
     }
 }

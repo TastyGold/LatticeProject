@@ -1,4 +1,5 @@
 ﻿using LatticeProject.Lattices;
+using LatticeProject.Rendering;
 using LatticeProject.Utility;
 using Raylib_cs;
 using System.Numerics;
@@ -9,7 +10,7 @@ namespace LatticeProject.Game
     {
         public Lattice mainLattice = new HexagonLattice();
         public WorldChunk mainChunk = new WorldChunk();
-        public LatticeCamera mainCam = new LatticeCamera(Vector2.Zero, 1, 0, new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2));
+        public LatticeCamera mainCam = new LatticeCamera(Vector2.Zero, 150f/RenderConfig.scale, 0, new Vector2(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2));
 
         public Vector2 mousePosition = new Vector2();
         public VecInt2 lastClosestVertex = VecInt2.Zero;
