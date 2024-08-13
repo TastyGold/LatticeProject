@@ -5,10 +5,10 @@ namespace LatticeProject.Game.Belts
 {
     internal class BeltInventoryEnumerator : IEnumerator<BeltInventoryElement>
     {
-        public BeltInventory inventory;
+        private readonly LinkedListNode<BeltInventoryElement>? headNode;
 
-        public int itemIndex = 0; //item index within an element
-        public LinkedListNode<BeltInventoryElement>? currentElementNode; //current element from linkedlist items
+        private int itemIndex = 0; //item index within an element
+        private LinkedListNode<BeltInventoryElement>? currentElementNode; //current element from linkedlist items
 
         public BeltInventoryElement Current => currentElementNode is null ? new BeltInventoryElement(new GameItem(-1), 0, 0) : currentElementNode.Value;
 
@@ -36,13 +36,13 @@ namespace LatticeProject.Game.Belts
         public void Reset()
         {
             itemIndex = 0;
-            currentElementNode = inventory.items.First;
+            currentElementNode = headNode;
         }
 
-        public BeltInventoryEnumerator(BeltInventory inventory)
+        public BeltInventoryEnumerator(LinkedListNode<BeltInventoryElement>? first)
         {
-            this.inventory = inventory;
-            currentElementNode = inventory.items.First;
+            headNode = first;
+            currentElementNode = first;
         }
 
         private bool disposedValue;

@@ -9,7 +9,7 @@ namespace LatticeProject.Rendering
     {
         public static void DrawBeltItems(Lattice lattice, BeltSegment segment)
         {
-            if (segment.inventoryManager.inventory.items.First is null) return;
+            if (segment.inventoryManager.inventory.IsEmpty()) return;
 
             BeltTraverser traverser = segment.GetTraverser();
             traverser.ResetEnd();

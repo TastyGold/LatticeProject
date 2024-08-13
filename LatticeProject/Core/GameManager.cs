@@ -142,7 +142,7 @@ namespace LatticeProject.Core
                 Raylib.DrawText("Available distance = " + mainChunk.beltSegments[^1].inventoryManager.AvailableDistance.ToString(), 10, 130, 20, Color.Red);
                 Raylib.DrawText("Item to move = " + inv.ItemToMove?.ToString(), 10, 150, 20, Color.DarkGreen);
                 int i = 170;
-                foreach (BeltInventoryElement item in inv.items)
+                foreach (BeltInventoryElement item in inv)
                 {
                     Raylib.DrawText($"i={(i - 110) / 20}, {item}", 10, i, 20, Color.Lime);
                     i += 20;

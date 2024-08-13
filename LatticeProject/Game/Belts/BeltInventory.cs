@@ -6,7 +6,7 @@ namespace LatticeProject.Game.Belts
     internal class BeltInventory : IEnumerable<BeltInventoryElement>
     {
         //list of RLE groups of items on the belt from TAIL to HEAD (same id and distance)
-        public readonly LinkedList<BeltInventoryElement> items;
+        private readonly LinkedList<BeltInventoryElement> items;
 
         //the item furthest along the belt that is not stationary (not yet bunched up at the end)
         public LinkedListNode<BeltInventoryElement>? ItemToMove { get; private set; } = null;
@@ -31,6 +31,8 @@ namespace LatticeProject.Game.Belts
         private const float maximumItemSnapDistance = 0.1f;
 
         public bool CanRecieveItem() => LeadingDistance >= 0;
+
+        public bool IsEmpty() => items.First is null;
 
         /// <summary> Adds a new item to the head of the belt (exact position offset can be specified with distanceToHead).</summary>
         public void AddToHead(GameItem item, float distanceFromHead)
@@ -286,7 +288,7 @@ namespace LatticeProject.Game.Belts
 
         public IEnumerator<BeltInventoryElement> GetEnumerator()
         {
-            return new BeltInventoryEnumerator(this);
+            return new BeltInventoryEnumerator(items.First);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
