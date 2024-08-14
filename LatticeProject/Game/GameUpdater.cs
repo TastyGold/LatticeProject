@@ -1,4 +1,5 @@
 ﻿using LatticeProject.Game.Belts;
+using LatticeProject.Lattices;
 using LatticeProject.Rendering;
 using Raylib_cs;
 
@@ -56,6 +57,12 @@ namespace LatticeProject.Game
             else if (!game.frameAdvance)
             {
                 game.mainChunk.Update(Math.Min(1 / 60f, Raylib.GetFrameTime()) * game.simulationSpeed);
+            }
+
+            //lattice swapping
+            if (Raylib.IsKeyPressed(KeyboardKey.G))
+            {
+                game.mainLattice = (game.mainLattice is HexagonLattice) ? new SquareLattice() : new HexagonLattice();
             }
 
             //camera updating
