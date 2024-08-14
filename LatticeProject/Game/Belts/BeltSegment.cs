@@ -96,9 +96,9 @@ namespace LatticeProject.Game.Belts
                 value);
         }
 
-        public BeltTraverser GetTraverser()
+        public BeltSegmentTraverser GetTraverser()
         {
-            return new BeltTraverser(this);
+            return new BeltSegmentTraverser(this);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace LatticeProject.Game.Belts
 {
-    internal class BeltTraverser
+    internal class BeltSegmentTraverser
     {
         private readonly BeltSegment segment;
 
@@ -60,7 +60,7 @@
             PositionAlongPiece = 0;
         }
 
-        public BeltTraverser(BeltSegment segment)
+        public BeltSegmentTraverser(BeltSegment segment)
         {
             this.segment = segment;
         }

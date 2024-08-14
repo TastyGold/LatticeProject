@@ -11,7 +11,7 @@ namespace LatticeProject.Rendering
         {
             if (segment.inventoryManager.inventory.IsEmpty()) return;
 
-            BeltTraverser traverser = segment.GetTraverser();
+            BeltSegmentTraverser traverser = segment.GetTraverser();
             traverser.ResetEnd();
             bool firstItem = true;
 
