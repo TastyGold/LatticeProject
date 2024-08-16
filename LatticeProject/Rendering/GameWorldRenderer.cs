@@ -1,35 +1,26 @@
 ﻿using LatticeProject.Game;
-using LatticeProject.Game.Belts;
-using LatticeProject.Utility;
 using Raylib_cs;
 
 namespace LatticeProject.Rendering
 {
     internal static class GameWorldRenderer
     {
+        private static Color mouseCursorBackgroundColor = new(11, 25, 44, 255);
+        private static Color mouseCursorOutlineColor = new(57, 76, 102, 255);
+
         public static void Draw(GameState game)
         {
-            LatticeRenderer.HighlightCell(game.mainLattice, game.closestVertex, new Color(11, 25, 44, 255));
+            LatticeRenderer.HighlightCell(game.mainLattice, game.closestVertex, mouseCursorBackgroundColor);
 
-            foreach (BeltSegment belt in game.selection.belts)
-            {
-                foreach (VecInt2 v in belt)
-                {
-                    LatticeRenderer.HighlightCell(game.mainLattice, v, new Color(11, 35, 66, 255));
-                }
-                if (belt.vertices.Count > 1)
-                {
-                    LatticeRenderer.HighlightCell(game.mainLattice, belt.vertices[0], new Color(66, 11, 35, 255)); //head
-                    LatticeRenderer.HighlightCell(game.mainLattice, belt.vertices[^1], new Color(11, 66, 50, 255)); //tail
-                }
-            }
+            GameWorldDebugRenderer.DrawBeltHighlights(game);
 
             LatticeRenderer.DrawLatticeGrid(game.mainLattice, game.mainCam.Target, game.mainCam.Zoom);
 
             WorldChunkRenderer.DrawAllBeltSegments(game.mainLattice, game.mainChunk);
 
+            GameWorldDebugRenderer.DrawBeltDepositConnections(game.mainLattice, game);
 
-            LatticeRenderer.DrawCellOutline(game.mainLattice, game.closestVertex, 4 / game.mainCam.Zoom, new Color(57, 76, 102, 255));
+            LatticeRenderer.DrawCellOutline(game.mainLattice, game.closestVertex, 4 / game.mainCam.Zoom, mouseCursorOutlineColor);
         }
     }
 }

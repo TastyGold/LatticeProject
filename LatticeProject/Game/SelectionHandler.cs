@@ -5,5 +5,6 @@ namespace LatticeProject.Game
     internal class SelectionHandler
     {
         public List<BeltSegment> belts = new();
+        public BeltSegment? connectingBelt = null;
     }
 }

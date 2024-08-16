@@ -47,6 +47,7 @@ namespace LatticeProject.Game
                 game.mainChunk.beltSegments[^1].UpdateLengths(game.mainLattice);
             }
 
+            //handle belt selection
             game.selection.belts.Clear();
             if (game.mainChunk.beltSegments.Count > 0)
             {
@@ -55,9 +56,28 @@ namespace LatticeProject.Game
                     if (segment.IsOccupyingTile(game.closestVertex))
                     {
                         game.selection.belts.Add(segment);
+                        break; //only allow one selected item
                     }
                 }
-                
+            }
+            if (Raylib.IsKeyPressed(KeyboardKey.C))
+            {
+                if (game.selection.belts.Count > 0)
+                {
+                    if (game.selection.connectingBelt is null)
+                    {
+                        game.selection.connectingBelt = game.selection.belts[0];
+                    }
+                    else
+                    {
+                        game.selection.connectingBelt.inventoryManager.depositInventory = game.selection.belts[0].inventoryManager;
+                        game.selection.connectingBelt = null;
+                    }
+                }
+                else
+                {
+                    game.selection.connectingBelt = null;
+                }
             }
 
             //game advancing
