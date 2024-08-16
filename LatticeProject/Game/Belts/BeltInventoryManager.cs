@@ -1,4 +1,6 @@
-﻿namespace LatticeProject.Game.Belts
+﻿using LatticeProject.Utility;
+
+namespace LatticeProject.Game.Belts
 {
     internal class BeltInventoryManager : IItemReciever
     {
@@ -16,6 +18,8 @@
         public float RecievedItemOffset { get; private set; }
 
         public float AvailableDistance { get; private set; }
+
+        public VecInt2 RecieverTile { get; set; }
 
         public bool TryAcceptRecievedItem()
         {

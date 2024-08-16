@@ -11,6 +11,7 @@ namespace LatticeProject.Game.Belts
     internal class BeltSegmentEnumerator : IEnumerator<VecInt2>
     {
         private static readonly HexagonLattice lattice = new();
+
         private readonly List<VecInt2> vertices;
         private int currentVertexIndex;
         private VecInt2 previousVertexDirection;

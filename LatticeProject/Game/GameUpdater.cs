@@ -30,8 +30,10 @@ namespace LatticeProject.Game
             //belt placing
             if (Raylib.IsMouseButtonPressed(0))
             {
-                game.mainChunk.beltSegments.Add(new BeltSegment());
-                game.mainChunk.beltSegments[^1].vertices.Add(game.lastClosestVertex);
+                BeltSegment newBelt = new BeltSegment();
+                game.mainChunk.beltSegments.Add(newBelt);
+                newBelt.vertices.Add(game.lastClosestVertex);
+                newBelt.inventoryManager.RecieverTile = game.lastClosestVertex;
             }
 
             if (game.closestVertex != game.lastClosestVertex && Raylib.IsMouseButtonDown(0))
@@ -45,15 +47,14 @@ namespace LatticeProject.Game
                 game.mainChunk.beltSegments[^1].UpdateLengths(game.mainLattice);
             }
 
-            game.selectedBelt = null;
+            game.selection.belts.Clear();
             if (game.mainChunk.beltSegments.Count > 0)
             {
                 foreach (BeltSegment segment in game.mainChunk.beltSegments)
                 {
                     if (segment.IsOccupyingTile(game.closestVertex))
                     {
-                        game.selectedBelt = segment;
-                        break;
+                        game.selection.belts.Add(segment);
                     }
                 }
                 

@@ -1,9 +1,12 @@
-﻿namespace LatticeProject.Game
+﻿using LatticeProject.Utility;
+
+namespace LatticeProject.Game
 {
     internal interface IItemReciever
     {
         public GameItem? RecievedItem { get; }
         public float RecievedItemOffset { get; }
+        public VecInt2 RecieverTile { get; }
 
         /// <summary>
         /// The amount of free space from the head of the associated inventory.

@@ -17,7 +17,7 @@ namespace LatticeProject.Game
         public VecInt2 lastClosestVertex = VecInt2.Zero;
         public VecInt2 closestVertex = VecInt2.Zero;
 
-        public BeltSegment? selectedBelt = null;
+        public SelectionHandler selection = new SelectionHandler();
 
         public float simulationSpeed = 3;
         public bool frameAdvance = false;
