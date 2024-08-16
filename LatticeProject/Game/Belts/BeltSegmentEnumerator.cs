@@ -1,6 +1,7 @@
 ﻿using LatticeProject.Lattices;
 using LatticeProject.Utility;
 using System.Collections;
+using System.Net.Http.Headers;
 
 namespace LatticeProject.Game.Belts
 {
@@ -9,6 +10,7 @@ namespace LatticeProject.Game.Belts
     /// </summary>
     internal class BeltSegmentEnumerator : IEnumerator<VecInt2>
     {
+        private static readonly HexagonLattice lattice = new();
         private readonly List<VecInt2> vertices;
         private int currentVertexIndex;
         private VecInt2 previousVertexDirection;
@@ -51,15 +53,9 @@ namespace LatticeProject.Game.Belts
             }
         }
 
-        public BeltSegmentEnumerator(List<VecInt2> vertices)
-        {
-            this.vertices = vertices;
-            Reset();
-        }
-
         public static VecInt2 GetDirection(VecInt2 start, VecInt2 destination)
         {
-            int dirIndex = new HexagonLattice().GetDirectionIndex(start, destination);
+            int dirIndex = lattice.GetDirectionIndex(start, destination);
             return dirIndex <= -1 ? VecInt2.Zero : LatticeMath.hexNeighbours[dirIndex];
         }
 
@@ -94,6 +90,12 @@ namespace LatticeProject.Game.Belts
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        public BeltSegmentEnumerator(List<VecInt2> vertices)
+        {
+            this.vertices = vertices;
+            Reset();
         }
     }
 }

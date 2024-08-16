@@ -97,6 +97,16 @@ namespace LatticeProject.Game.Belts
                 value);
         }
 
+        public bool IsOccupyingTile(VecInt2 v)
+        {
+            BeltSegmentEnumerator enumerator = new (vertices);
+
+            //lmao
+            while (enumerator.Current != v && enumerator.MoveNext());
+            
+            return enumerator.Current == v;
+        }
+
         public BeltSegmentTraverser GetTraverser()
         {
             return new BeltSegmentTraverser(this);

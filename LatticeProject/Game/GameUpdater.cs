@@ -45,6 +45,20 @@ namespace LatticeProject.Game
                 game.mainChunk.beltSegments[^1].UpdateLengths(game.mainLattice);
             }
 
+            game.selectedBelt = null;
+            if (game.mainChunk.beltSegments.Count > 0)
+            {
+                foreach (BeltSegment segment in game.mainChunk.beltSegments)
+                {
+                    if (segment.IsOccupyingTile(game.closestVertex))
+                    {
+                        game.selectedBelt = segment;
+                        break;
+                    }
+                }
+                
+            }
+
             //game advancing
             if (Raylib.IsKeyPressed(KeyboardKey.P))
             {

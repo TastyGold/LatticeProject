@@ -1,4 +1,5 @@
-﻿using LatticeProject.Lattices;
+﻿using LatticeProject.Game.Belts;
+using LatticeProject.Lattices;
 using LatticeProject.Rendering;
 using LatticeProject.Utility;
 using Raylib_cs;
@@ -15,6 +16,8 @@ namespace LatticeProject.Game
         public Vector2 mousePosition = new Vector2();
         public VecInt2 lastClosestVertex = VecInt2.Zero;
         public VecInt2 closestVertex = VecInt2.Zero;
+
+        public BeltSegment? selectedBelt = null;
 
         public float simulationSpeed = 3;
         public bool frameAdvance = false;
