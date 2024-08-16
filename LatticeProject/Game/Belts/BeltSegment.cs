@@ -1,10 +1,11 @@
 ﻿using LatticeProject.Lattices;
 using LatticeProject.Utility;
+using System.Collections;
 using System.Numerics;
 
 namespace LatticeProject.Game.Belts
 {
-    internal class BeltSegment
+    internal class BeltSegment : IEnumerable<VecInt2>
     {
         public BeltInventoryManager inventoryManager = new BeltInventoryManager();
 
@@ -99,6 +100,16 @@ namespace LatticeProject.Game.Belts
         public BeltSegmentTraverser GetTraverser()
         {
             return new BeltSegmentTraverser(this);
+        }
+
+        public IEnumerator<VecInt2> GetEnumerator()
+        {
+            return new BeltSegmentEnumerator(vertices);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

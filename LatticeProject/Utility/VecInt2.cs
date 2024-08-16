@@ -20,6 +20,14 @@
         {
             return new VecInt2(a.x - b.x, a.y - b.y);
         }
+        public static VecInt2 operator *(VecInt2 v, int m)
+        {
+            return new VecInt2(v.x * m, v.y * m);
+        }
+        public static VecInt2 operator /(VecInt2 v, int m)
+        {
+            return new VecInt2(v.x / m, v.y / m);
+        }
 
         public static bool operator ==(VecInt2 a, VecInt2 b)
         {
