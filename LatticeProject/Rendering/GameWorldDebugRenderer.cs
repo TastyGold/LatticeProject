@@ -69,7 +69,6 @@ namespace LatticeProject.Rendering
             }
 
             BoundaryRenderer.DrawHexBoundaryLines(lattice, bounds);
-            BoundaryRenderer.DrawHexBoundaryCorners(lattice, bounds);
         }
 
         public static void DrawBeltBounds(Lattice lattice, IEnumerable<BeltSegment> belts)
