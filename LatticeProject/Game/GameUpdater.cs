@@ -56,7 +56,7 @@ namespace LatticeProject.Game
                     if (segment.IsOccupyingTile(game.closestVertex))
                     {
                         game.selection.belts.Add(segment);
-                        break; //only allow one selected item
+                        break; //only allow one selected belt
                     }
                 }
             }
@@ -77,6 +77,20 @@ namespace LatticeProject.Game
                 else
                 {
                     game.selection.connectingBelt = null;
+                }
+            }
+
+            //manually add/remove items
+            if (game.selection.belts.Count > 0)
+            {
+                BeltInventory inventory = game.selection.belts[0].inventoryManager.inventory;
+                if (inventory.CanRecieveItem() && Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.I))
+                {
+                    inventory.AddToHead(new GameItem(1), -GameRules.minItemDistance);
+                }
+                if (Raylib_cs.Raylib.IsKeyPressed(Raylib_cs.KeyboardKey.O))
+                {
+                    inventory.RemoveTailingItem();
                 }
             }
 

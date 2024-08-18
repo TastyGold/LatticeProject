@@ -42,25 +42,15 @@ namespace LatticeProject.Game.Belts
         //Manager methods
         public void UpdateInventory(float deltaTime)
         {
-            depositInventory = this; //temporary
-
-            //manually add/remove items
-            if (inventory.CanRecieveItem() && Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.I))
-            {
-                inventory.AddToHead(new GameItem(1), -GameRules.minItemDistance);
-            }
-            if (Raylib_cs.Raylib.IsKeyPressed(Raylib_cs.KeyboardKey.O))
-            {
-                inventory.RemoveTailingItem();
-            }
-
             //actual belt logic
-            bool canTransfer = depositInventory.AvailableDistance >= 0 && depositInventory.RecievedItem is null;
+            bool canTransfer = depositInventory is not null && depositInventory.AvailableDistance >= 0 && depositInventory.RecievedItem is null;
+            float endOfBeltPadding = depositInventory is not null ? depositInventory.AvailableDistance : 0;
+
             //note: head of conveyor corresponds to LeadingDistance of -minItemDistance;
-            GameItemWithOffset? transferItem = inventory.MoveItems(deltaTime, GameRules.minItemDistance - depositInventory.AvailableDistance, canTransfer);
+            GameItemWithOffset? transferItem = inventory.MoveItems(deltaTime, GameRules.minItemDistance - endOfBeltPadding, canTransfer);
             if (transferItem is not null)
             {
-                depositInventory.TryRecieveItem(transferItem.item, transferItem.offset);
+                depositInventory?.TryRecieveItem(transferItem.item, transferItem.offset);
             }
         }
 

@@ -14,9 +14,9 @@ namespace LatticeProject.Rendering
 
         private static Color beltConnectionColor = Color.Green;
 
-        public static void DrawBeltHighlights(GameState game)
+        public static void DrawBeltHighlights(GameState game, IEnumerable<BeltSegment> belts)
         {
-            foreach (BeltSegment belt in game.selection.belts)
+            foreach (BeltSegment belt in belts)
             {
                 foreach (VecInt2 v in belt)
                 {
@@ -30,11 +30,11 @@ namespace LatticeProject.Rendering
             }
         }
 
-        public static void DrawBeltDepositConnections(Lattice lattice, GameState game)
+        public static void DrawBeltDepositConnections(Lattice lattice, GameState game, IEnumerable<BeltSegment> belts)
         {
-            foreach (BeltSegment belt in game.selection.belts)
+            foreach (BeltSegment belt in belts)
             {
-                if (belt.vertices.Count > 1 && belt.inventoryManager.depositInventory is not null)
+                if (belt.vertices.Count > 1 && belt.inventoryManager.depositInventory is not null && !ReferenceEquals(game.selection.connectingBelt, belt))
                 {
                     Raylib.DrawLineV(
                         lattice.GetCartesianCoords(belt.vertices[^1]) * RenderConfig.scale,
@@ -42,6 +42,14 @@ namespace LatticeProject.Rendering
                         beltConnectionColor
                         );
                 }
+            }
+            if (game.selection.connectingBelt is not null)
+            {
+                Raylib.DrawLineV(
+                       lattice.GetCartesianCoords(game.selection.connectingBelt.vertices[^1]) * RenderConfig.scale,
+                       game.mousePosition,
+                       beltConnectionColor
+                       );
             }
         }
     }

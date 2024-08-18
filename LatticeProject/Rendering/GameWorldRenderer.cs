@@ -12,13 +12,13 @@ namespace LatticeProject.Rendering
         {
             LatticeRenderer.HighlightCell(game.mainLattice, game.closestVertex, mouseCursorBackgroundColor);
 
-            GameWorldDebugRenderer.DrawBeltHighlights(game);
+            GameWorldDebugRenderer.DrawBeltHighlights(game, game.mainChunk.beltSegments);
 
             LatticeRenderer.DrawLatticeGrid(game.mainLattice, game.mainCam.Target, game.mainCam.Zoom);
 
             WorldChunkRenderer.DrawAllBeltSegments(game.mainLattice, game.mainChunk);
 
-            GameWorldDebugRenderer.DrawBeltDepositConnections(game.mainLattice, game);
+            GameWorldDebugRenderer.DrawBeltDepositConnections(game.mainLattice, game, game.mainChunk.beltSegments);
 
             LatticeRenderer.DrawCellOutline(game.mainLattice, game.closestVertex, 4 / game.mainCam.Zoom, mouseCursorOutlineColor);
         }

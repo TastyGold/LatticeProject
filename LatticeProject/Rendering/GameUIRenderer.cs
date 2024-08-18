@@ -17,7 +17,8 @@ namespace LatticeProject.Rendering
                 Raylib.DrawText("Leading distance = " + inv.LeadingDistance.ToString(), 10, 70, 20, Color.Blue);
                 Raylib.DrawText("Leading error = " + inv.CalculateLeadingDistanceError().ToString(), 10, 90, 20, Color.Maroon);
                 Raylib.DrawText("Available distance = " + game.mainChunk.beltSegments[^1].inventoryManager.AvailableDistance.ToString(), 10, 110, 20, Color.Red);
-                DrawStrings(inv.GetInventoryDescription().Split('\n'), 10, 130, 20, Color.Lime);
+                Raylib.DrawText("Selected belt = " + game.selection.connectingBelt?.ToString(), 10, 130, 20, Color.Orange);
+                DrawStrings(inv.GetInventoryDescription().Split('\n'), 10, 150, 20, Color.Lime);
             }
         }
 
