@@ -21,6 +21,7 @@ namespace LatticeProject.Game
 
         public float simulationSpeed = 3;
         public bool frameAdvance = false;
+        public bool debugMode = true;
 
         public GameState(Lattice lattice)
         {

@@ -95,6 +95,8 @@ namespace LatticeProject.Game
                 }
             }
 
+            if (Raylib.IsKeyPressed(KeyboardKey.B)) game.debugMode = !game.debugMode;
+
             //game advancing
             if (Raylib.IsKeyPressed(KeyboardKey.P))
             {
