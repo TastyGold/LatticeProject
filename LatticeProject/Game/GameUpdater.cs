@@ -74,8 +74,9 @@ namespace LatticeProject.Game
                         game.selection.connectingBelt = null;
                     }
                 }
-                else
+                else if (game.selection.connectingBelt is not null)
                 {
+                    game.selection.connectingBelt.inventoryManager.depositInventory = null;
                     game.selection.connectingBelt = null;
                 }
             }
@@ -84,11 +85,11 @@ namespace LatticeProject.Game
             if (game.selection.belts.Count > 0)
             {
                 BeltInventory inventory = game.selection.belts[0].inventoryManager.inventory;
-                if (inventory.CanRecieveItem() && Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.I))
+                if (inventory.CanRecieveItem() && Raylib.IsKeyDown(KeyboardKey.I))
                 {
                     inventory.AddToHead(new GameItem(1), -GameRules.minItemDistance);
                 }
-                if (Raylib_cs.Raylib.IsKeyPressed(Raylib_cs.KeyboardKey.O))
+                if (Raylib.IsKeyPressed(KeyboardKey.O))
                 {
                     inventory.RemoveTailingItem();
                 }

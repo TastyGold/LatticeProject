@@ -19,6 +19,7 @@ namespace LatticeProject.Rendering
             WorldChunkRenderer.DrawAllBeltSegments(game.mainLattice, game.mainChunk);
 
             GameWorldDebugRenderer.DrawBeltDepositConnections(game.mainLattice, game, game.mainChunk.beltSegments);
+            if (game.mainChunk.beltSegments.Count > 0) GameWorldDebugRenderer.DrawBeltBounds(game.mainLattice, game.mainChunk.beltSegments[^1]);
 
             LatticeRenderer.DrawCellOutline(game.mainLattice, game.closestVertex, 4 / game.mainCam.Zoom, mouseCursorOutlineColor);
         }

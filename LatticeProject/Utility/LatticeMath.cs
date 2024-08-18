@@ -19,6 +19,11 @@ namespace LatticeProject.Utility
             new VecInt2(1, -1), //up right
         };
 
+        public static int GetS(int q, int r)
+        {
+            return -q - r;
+        }
+
         public static int Modulo(int value, int mod)
         {
             int r = value % mod;

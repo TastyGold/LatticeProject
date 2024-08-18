@@ -52,5 +52,32 @@ namespace LatticeProject.Rendering
                        );
             }
         }
+
+        public static void DrawBeltBounds(Lattice lattice, BeltSegment belt)
+        {
+            HexBoundary bounds = new HexBoundary(int.MaxValue, int.MinValue, int.MaxValue, int.MinValue, int.MaxValue, int.MinValue);
+            foreach (VecInt2 v in belt)
+            {
+                bounds.minQ = Math.Min(bounds.minQ, v.x);
+                bounds.maxQ = Math.Max(bounds.maxQ, v.x);
+
+                bounds.minR = Math.Min(bounds.minR, v.y);
+                bounds.maxR = Math.Max(bounds.maxR, v.y);
+
+                bounds.minS = Math.Min(bounds.minS, LatticeMath.GetS(v.x, v.y));
+                bounds.maxS = Math.Max(bounds.maxS, LatticeMath.GetS(v.x, v.y));
+            }
+
+            BoundaryRenderer.DrawHexBoundaryLines(lattice, bounds);
+            BoundaryRenderer.DrawHexBoundaryCorners(lattice, bounds);
+        }
+
+        public static void DrawBeltBounds(Lattice lattice, IEnumerable<BeltSegment> belts)
+        {
+            foreach (BeltSegment belt in belts)
+            {
+                DrawBeltBounds(lattice, belt);
+            }
+        }
     }
 }
