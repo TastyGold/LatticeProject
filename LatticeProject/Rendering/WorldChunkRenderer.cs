@@ -8,7 +8,8 @@ namespace LatticeProject.Rendering
     {
         public static void DrawAllBeltSegments(Lattice lattice, WorldChunk chunk)
         {
-            chunk.beltSegments.ForEach((belt) => BeltRenderer.DrawBeltSegment(lattice, belt));
+            chunk.beltSegments.ForEach((belt) => BeltRenderer.DrawBeltOutline(lattice, belt));
+            chunk.beltSegments.ForEach((belt) => BeltRenderer.DrawBeltConveyor(lattice, belt));
             chunk.beltSegments.ForEach((belt) => BeltItemRenderer.DrawBeltItems(lattice, belt));
         }
     }

@@ -15,10 +15,17 @@ namespace LatticeProject.Rendering
 
         public static void DrawBeltSegment(Lattice lattice, BeltSegment segment)
         {
-            //outline
-            DrawBeltPieces(lattice, segment, (beltWidth + beltOutlineWidth) * scale, beltOutlineColor);
+            DrawBeltOutline(lattice, segment);
+            DrawBeltConveyor(lattice, segment);
+        }
 
-            //belt
+        public static void DrawBeltOutline(Lattice lattice, BeltSegment segment)
+        {
+            DrawBeltPieces(lattice, segment, (beltWidth + beltOutlineWidth) * scale, beltOutlineColor);
+        }
+
+        public static void DrawBeltConveyor(Lattice lattice, BeltSegment segment)
+        {
             DrawBeltPieces(lattice, segment, beltWidth * scale, beltColor);
         }
 
