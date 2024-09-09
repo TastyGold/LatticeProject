@@ -12,7 +12,10 @@ namespace LatticeProject.Rendering
         {
             LatticeRenderer.HighlightCell(game.mainLattice, game.closestVertex, mouseCursorBackgroundColor);
 
-            if (game.debugMode) GameWorldDebugRenderer.DrawBeltHighlights(game, game.mainChunk.beltSegments);
+            if (game.debugMode)
+            {
+                GameWorldDebugRenderer.DrawBeltHighlights(game, game.selection.belts);
+            }
 
             LatticeRenderer.DrawLatticeGrid(game.mainLattice, game.mainCam.Target, game.mainCam.Zoom);
 
@@ -20,8 +23,8 @@ namespace LatticeProject.Rendering
 
             if (game.debugMode)
             {
-                GameWorldDebugRenderer.DrawBeltDepositConnections(game.mainLattice, game, game.mainChunk.beltSegments);
-                if (game.mainChunk.beltSegments.Count > 0) GameWorldDebugRenderer.DrawBeltBounds(game.mainLattice, game.mainChunk.beltSegments[^1]);
+                GameWorldDebugRenderer.DrawBeltDepositConnections(game.mainLattice, game, game.selection.belts);
+                if (game.mainChunk.beltSegments.Count > 0) GameWorldDebugRenderer.DrawBeltBounds(game.mainLattice, game.selection.belts);
             }
 
             LatticeRenderer.DrawCellOutline(game.mainLattice, game.closestVertex, 4 / game.mainCam.Zoom, mouseCursorOutlineColor);

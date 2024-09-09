@@ -7,8 +7,8 @@ namespace LatticeProject.Rendering
 {
     internal static class BeltRenderer
     {
-        private static Color beltColor = new (33, 38, 45, 255);
-        private static Color beltOutlineColor = new (48, 54, 61, 255);
+        private static Color beltColor = new(33, 38, 45, 255);
+        private static Color beltOutlineColor = new(48, 54, 61, 255);
         private const float beltOutlineWidth = 0.1f;
         private const float beltWidth = 0.5f;
 
@@ -28,7 +28,7 @@ namespace LatticeProject.Rendering
             DrawBeltPieces(lattice, segment, beltWidth * RenderConfig.scale, beltColor);
         }
 
-        public static void DrawBeltPieces(Lattice lattice, BeltSegment segment, float width, Color col)
+        private static void DrawBeltPieces(Lattice lattice, BeltSegment segment, float width, Color col)
         {
             for (int i = 0; i < segment.vertices.Count - 1; i++)
             {
@@ -45,7 +45,7 @@ namespace LatticeProject.Rendering
             }
         }
 
-        public static void DrawBeltVertex(Vector2 position, float width, Color col)
+        private static void DrawBeltVertex(Vector2 position, float width, Color col)
         {
             Raylib.DrawCircleV(position * RenderConfig.scale, width, col);
         }
