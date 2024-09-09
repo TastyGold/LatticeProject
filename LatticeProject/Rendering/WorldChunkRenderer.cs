@@ -12,5 +12,10 @@ namespace LatticeProject.Rendering
             chunk.beltSegments.ForEach((belt) => BeltRenderer.DrawBeltConveyor(lattice, belt));
             chunk.beltSegments.ForEach((belt) => BeltItemRenderer.DrawBeltItems(lattice, belt));
         }
+
+        public static void DrawAllBuildings(Lattice lattice, WorldChunk chunk)
+        {
+            chunk.buildings.ForEach((building) => BuildingRenderer.DrawBuilding(lattice, building));
+        }
     }
 }

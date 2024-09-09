@@ -1,4 +1,5 @@
 ﻿using LatticeProject.Game.Belts;
+using LatticeProject.Game.Buildings;
 using LatticeProject.Lattices;
 using LatticeProject.Rendering;
 using LatticeProject.Utility;
@@ -29,6 +30,8 @@ namespace LatticeProject.Game
         {
             Raylib.InitWindow(1600, 900, "Hello World");
             Raylib.SetTargetFPS(120);
+
+            BuildingTypes.LoadBuildingData();
         }
 
         private static void Update()

@@ -1,4 +1,5 @@
 ﻿using LatticeProject.Game.Belts;
+using LatticeProject.Game.Buildings;
 using LatticeProject.Lattices;
 using LatticeProject.Rendering;
 using Raylib_cs;
@@ -14,6 +15,19 @@ namespace LatticeProject.Game
 
             game.mousePosition = Raylib.GetScreenToWorld2D(Raylib.GetMousePosition(), game.mainCam.camera);
             game.closestVertex = game.mainLattice.GetClosestVertex(game.mousePosition / RenderConfig.scale);
+
+            if (game.mainChunk.buildings.Count == 0)
+            {
+                game.mainChunk.buildings.Add(new Building() { buildingType = 0, center = game.closestVertex });
+            }
+            else if (Raylib.IsMouseButtonPressed(MouseButton.Right))
+            {
+                game.mainChunk.buildings.Add(new Building() { buildingType = (game.mainChunk.buildings[^1].buildingType + 1) % BuildingTypes.buildingTypes.Count, center = game.closestVertex });
+            }
+            else
+            {
+                game.mainChunk.buildings[^1].center = game.closestVertex;
+            }
 
             //camera controls
             if (Raylib.IsKeyPressed(KeyboardKey.Left)) game.mainCam.camera.Rotation -= 30;

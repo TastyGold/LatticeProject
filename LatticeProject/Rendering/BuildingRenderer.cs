@@ -1,14 +1,27 @@
-﻿using LatticeProject.Game;
+﻿using LatticeProject.Game.Buildings;
 using LatticeProject.Lattices;
+using LatticeProject.Utility;
 using Raylib_cs;
+using System.Numerics;
 
 namespace LatticeProject.Rendering
 {
     internal static class BuildingRenderer
     {
-        public static void DrawBuilding(Lattice lattice, Building building, Color col)
+        public static void DrawBuilding(Lattice lattice, Building building)
         {
-            Raylib.DrawPoly(lattice.GetCartesianCoords(building.Position) * RenderConfig.scale, 6, RenderConfig.scale / 2, 30, col);
+            BuildingType type = BuildingTypes.buildingTypes[building.buildingType];
+
+            foreach (VecInt2 v in type.tiles)
+            {
+                DrawBuildingPiece(lattice, building.center + v, RenderConfig.scale / LatticeMath.sqrt3, Color.DarkGray);
+            }
+        }
+
+        public static void DrawBuildingPiece(Lattice lattice, VecInt2 tile, float size, Color col)
+        {
+            Vector2 pos = lattice.GetCartesianCoords(tile);
+            Raylib.DrawPoly(pos * RenderConfig.scale, 6, size, 30, col);
         }
     }
 }
