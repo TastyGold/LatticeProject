@@ -1,12 +1,13 @@
 ﻿using LatticeProject.Game;
 using LatticeProject.Game.Belts;
 using LatticeProject.Lattices;
-using System.Xml.Linq;
 
 namespace LatticeProject.Rendering
 {
     internal static class BeltItemRenderer
     {
+        private const float itemSize = 0.25f;
+
         public static void DrawBeltItems(Lattice lattice, BeltSegment segment)
         {
             if (segment.inventoryManager.inventory.IsEmpty()) return;
@@ -32,7 +33,7 @@ namespace LatticeProject.Rendering
                         lattice, 
                         traverser.CurrentVertex, 
                         traverser.PositionAlongPiece),
-                    size: RenderConfig.scale / 4
+                    size: RenderConfig.scale * itemSize
                     );
             }
         }

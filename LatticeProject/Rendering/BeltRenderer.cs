@@ -1,18 +1,16 @@
 ﻿using LatticeProject.Game.Belts;
 using LatticeProject.Lattices;
-using LatticeProject.Utility;
 using Raylib_cs;
 using System.Numerics;
-using static LatticeProject.Rendering.RenderConfig;
 
 namespace LatticeProject.Rendering
 {
     internal static class BeltRenderer
     {
-        private static Color beltColor = new Color(33, 38, 45, 255);
-        private static Color beltOutlineColor = new Color(48, 54, 61, 255);
-        public static float beltOutlineWidth = 0.1f;
-        public static float beltWidth = 0.6f;
+        private static Color beltColor = new (33, 38, 45, 255);
+        private static Color beltOutlineColor = new (48, 54, 61, 255);
+        private const float beltOutlineWidth = 0.1f;
+        private const float beltWidth = 0.5f;
 
         public static void DrawBeltSegment(Lattice lattice, BeltSegment segment)
         {
@@ -22,12 +20,12 @@ namespace LatticeProject.Rendering
 
         public static void DrawBeltOutline(Lattice lattice, BeltSegment segment)
         {
-            DrawBeltPieces(lattice, segment, (beltWidth + beltOutlineWidth) * scale, beltOutlineColor);
+            DrawBeltPieces(lattice, segment, (beltWidth + beltOutlineWidth) * RenderConfig.scale, beltOutlineColor);
         }
 
         public static void DrawBeltConveyor(Lattice lattice, BeltSegment segment)
         {
-            DrawBeltPieces(lattice, segment, beltWidth * scale, beltColor);
+            DrawBeltPieces(lattice, segment, beltWidth * RenderConfig.scale, beltColor);
         }
 
         public static void DrawBeltPieces(Lattice lattice, BeltSegment segment, float width, Color col)
@@ -37,14 +35,19 @@ namespace LatticeProject.Rendering
                 Vector2 start = lattice.GetCartesianCoords(segment.vertices[i]);
                 Vector2 end = lattice.GetCartesianCoords(segment.vertices[i + 1]);
 
-                Raylib.DrawLineEx(start * scale, end * scale, width, col);
-                Raylib.DrawPoly(start * scale, 6, width / LatticeMath.sqrt3, 0, col);
+                Raylib.DrawLineEx(start * RenderConfig.scale, end * RenderConfig.scale, width, col);
+                DrawBeltVertex(start, width / 2, col);
 
                 if (i == segment.vertices.Count - 2)
                 {
-                    Raylib.DrawPoly(end * scale, 6, width / LatticeMath.sqrt3, 0, col);
+                    DrawBeltVertex(end, width / 2, col);
                 }
             }
+        }
+
+        public static void DrawBeltVertex(Vector2 position, float width, Color col)
+        {
+            Raylib.DrawCircleV(position * RenderConfig.scale, width, col);
         }
     }
 }
