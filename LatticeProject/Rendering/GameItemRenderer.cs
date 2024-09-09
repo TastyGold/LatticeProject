@@ -8,7 +8,7 @@ namespace LatticeProject.Rendering
     {
         public static void DrawGameItem(GameItem item, Vector2 position, float size)
         {
-            Raylib.DrawCircleV(position, size, Colors.colors[item.color]);
+            Raylib.DrawPoly(position, 6, size, 0, Colors.colors[item.color]);
         }
     }
 }

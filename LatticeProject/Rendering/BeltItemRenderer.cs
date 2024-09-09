@@ -32,7 +32,7 @@ namespace LatticeProject.Rendering
                         lattice, 
                         traverser.CurrentVertex, 
                         traverser.PositionAlongPiece),
-                    size: RenderConfig.scale / 5
+                    size: RenderConfig.scale / 4
                     );
             }
         }

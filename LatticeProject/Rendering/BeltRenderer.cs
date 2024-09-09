@@ -1,5 +1,6 @@
 ﻿using LatticeProject.Game.Belts;
 using LatticeProject.Lattices;
+using LatticeProject.Utility;
 using Raylib_cs;
 using System.Numerics;
 using static LatticeProject.Rendering.RenderConfig;
@@ -11,7 +12,7 @@ namespace LatticeProject.Rendering
         private static Color beltColor = new Color(33, 38, 45, 255);
         private static Color beltOutlineColor = new Color(48, 54, 61, 255);
         public static float beltOutlineWidth = 0.1f;
-        public static float beltWidth = 0.4f;
+        public static float beltWidth = 0.6f;
 
         public static void DrawBeltSegment(Lattice lattice, BeltSegment segment)
         {
@@ -37,11 +38,11 @@ namespace LatticeProject.Rendering
                 Vector2 end = lattice.GetCartesianCoords(segment.vertices[i + 1]);
 
                 Raylib.DrawLineEx(start * scale, end * scale, width, col);
-                Raylib.DrawCircleV(start * scale, width / 2, col);
+                Raylib.DrawPoly(start * scale, 6, width / LatticeMath.sqrt3, 0, col);
 
                 if (i == segment.vertices.Count - 2)
                 {
-                    Raylib.DrawCircleV(end * scale, width / 2, col);
+                    Raylib.DrawPoly(end * scale, 6, width / LatticeMath.sqrt3, 0, col);
                 }
             }
         }
