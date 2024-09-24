@@ -101,7 +101,7 @@ namespace LatticeProject.Game
                 BeltInventory inventory = game.selection.belts[0].inventoryManager.inventory;
                 if (inventory.CanRecieveItem() && Raylib.IsKeyDown(KeyboardKey.I))
                 {
-                    inventory.AddToHead(new GameItem(1), -GameRules.minItemDistance);
+                    inventory.AddToHead(new GameItem(new Random().Next(9)), -GameRules.minItemDistance);
                 }
                 if (Raylib.IsKeyPressed(KeyboardKey.O))
                 {

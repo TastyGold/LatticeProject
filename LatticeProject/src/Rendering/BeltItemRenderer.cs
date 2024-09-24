@@ -27,13 +27,13 @@ namespace LatticeProject.Rendering
                     firstItem = false;
                 }
 
-                GameItemRenderer.DrawGameItem(
+                GameItemRenderer.DrawGameItemTextured(
                     item: element.item, 
                     position: RenderConfig.scale * segment.GetPositionAlongPiece(
                         lattice, 
                         traverser.CurrentVertex, 
                         traverser.PositionAlongPiece),
-                    size: RenderConfig.scale * itemSize
+                    size: RenderConfig.scale * itemSize * 2
                     );
             }
         }

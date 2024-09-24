@@ -28,10 +28,13 @@ namespace LatticeProject.Game
 
         private static void Begin()
         {
+            Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint);
+
             Raylib.InitWindow(1600, 900, "Hello World");
             Raylib.SetTargetFPS(120);
 
             BuildingTypes.LoadBuildingData();
+            GameItemRenderer.Initialise();
         }
 
         private static void Update()

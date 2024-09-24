@@ -21,7 +21,7 @@ namespace LatticeProject.Rendering
 
             WorldChunkRenderer.DrawAllBeltSegments(game.mainLattice, game.mainChunk);
 
-            WorldChunkRenderer.DrawAllBuildings(game.mainLattice, game.mainChunk);
+            //WorldChunkRenderer.DrawAllBuildings(game.mainLattice, game.mainChunk);
 
             if (game.debugMode)
             {
