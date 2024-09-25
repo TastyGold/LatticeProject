@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using Raylib_cs;
+using System.Numerics;
 
 namespace LatticeProject.Utility
 {
@@ -38,6 +39,12 @@ namespace LatticeProject.Utility
         public static bool IsNearlyEqual(this float a, float b, float epsilon)
         {
             return Math.Abs(a - b) <= epsilon;
+        }
+
+        //Stops texture bleeding by slightly decreasing the height/width
+        public static Rectangle FixBleedingEdge(this Rectangle rec, float epsilon)
+        {
+            return new Rectangle(rec.X + epsilon, rec.Y + epsilon, rec.Width - 2 * epsilon, rec.Height - 2 * epsilon);
         }
     }
 }
