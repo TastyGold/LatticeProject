@@ -9,7 +9,7 @@ namespace LatticeProject.Game
 {
     internal static class GameManager
     {
-        static readonly GameState game = new GameState(
+        static readonly GameState game = new(
             lattice: new HexagonLattice()
             );
 
@@ -29,13 +29,14 @@ namespace LatticeProject.Game
         private static void Begin()
         {
             Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint);
-            Raylib.SetConfigFlags(ConfigFlags.FullscreenMode);
 
             Raylib.InitWindow(1600, 900, "Hello World");
             Raylib.SetTargetFPS(120);
 
             BuildingTypes.LoadBuildingData();
             GameItemRenderer.Initialise();
+
+            TestWorldGenerator.GenerateStraightConveyorsWorld(game, 100);
         }
 
         private static void Update()
