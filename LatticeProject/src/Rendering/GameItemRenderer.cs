@@ -8,11 +8,11 @@ namespace LatticeProject.Rendering
     internal static class GameItemRenderer
     {
         private static Texture2D itemAtlas;
-        private static readonly int itemResolution = 512;
+        private static readonly int itemResolution = 128;
 
         public static void Initialise()
         {
-            itemAtlas = Raylib.LoadTexture("..//..//..//Assets/9-tone-items-dark-512x.png");
+            itemAtlas = Raylib.LoadTexture($"..//..//..//Assets/9-tone-items-light-{itemResolution}x.png");
         }
 
         public static void DrawGameItem(GameItem item, Vector2 position, float size)

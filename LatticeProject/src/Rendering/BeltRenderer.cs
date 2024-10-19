@@ -7,8 +7,6 @@ namespace LatticeProject.Rendering
 {
     internal static class BeltRenderer
     {
-        private static Color beltColor = new(33, 38, 45, 255);
-        private static Color beltOutlineColor = new(48, 54, 61, 255);
         private const float beltOutlineWidth = 0.1f;
         private const float beltWidth = 0.5f;
 
@@ -20,12 +18,12 @@ namespace LatticeProject.Rendering
 
         public static void DrawBeltOutline(Lattice lattice, BeltSegment segment)
         {
-            DrawBeltPieces(lattice, segment, (beltWidth + beltOutlineWidth) * RenderConfig.scale, beltOutlineColor);
+            DrawBeltPieces(lattice, segment, (beltWidth + beltOutlineWidth) * RenderConfig.scale, GameColors.beltOutlineColor);
         }
 
         public static void DrawBeltConveyor(Lattice lattice, BeltSegment segment)
         {
-            DrawBeltPieces(lattice, segment, beltWidth * RenderConfig.scale, beltColor);
+            DrawBeltPieces(lattice, segment, beltWidth * RenderConfig.scale, GameColors.beltColor);
         }
 
         private static void DrawBeltPieces(Lattice lattice, BeltSegment segment, float width, Color col)

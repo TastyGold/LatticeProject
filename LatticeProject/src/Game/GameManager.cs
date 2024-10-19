@@ -36,7 +36,7 @@ namespace LatticeProject.Game
             BuildingTypes.LoadBuildingData();
             GameItemRenderer.Initialise();
 
-            TestWorldGenerator.GenerateStraightConveyorsWorld(game, 100);
+            //TestWorldGenerator.GenerateStraightConveyorsWorld(game, 100);
         }
 
         private static void Update()
@@ -47,7 +47,7 @@ namespace LatticeProject.Game
         private static void Draw()
         {
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(new Color(13, 17, 23, 255));
+            Raylib.ClearBackground(GameColors.mainBackgroundColor);
 
             Raylib.BeginMode2D(game.mainCam.camera);
 

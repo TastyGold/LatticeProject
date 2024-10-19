@@ -6,7 +6,7 @@ namespace LatticeProject.Rendering
 {
     internal static class BeltItemRenderer
     {
-        private const float itemSize = 0.25f;
+        private const float itemSize = 0.225f;
 
         public static void DrawBeltItems(Lattice lattice, BeltSegment segment)
         {

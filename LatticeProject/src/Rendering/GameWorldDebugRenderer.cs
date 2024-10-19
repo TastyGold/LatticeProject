@@ -8,24 +8,18 @@ namespace LatticeProject.Rendering
 {
     internal static class GameWorldDebugRenderer
     {
-        private static Color beltHighlightHeadColor = new(66, 11, 35, 255);
-        private static Color beltHighlightMiddleColor = new(11, 35, 66, 255);
-        private static Color beltHighlightTailColor = new(11, 66, 50, 255);
-
-        private static Color beltConnectionColor = Color.Green;
-
         public static void DrawBeltHighlights(GameState game, IEnumerable<BeltSegment> belts)
         {
             foreach (BeltSegment belt in belts)
             {
                 foreach (VecInt2 v in belt)
                 {
-                    LatticeRenderer.HighlightCell(game.mainLattice, v, beltHighlightMiddleColor);
+                    LatticeRenderer.HighlightCell(game.mainLattice, v, GameColors.beltHighlightMiddleColor);
                 }
                 if (belt.vertices.Count > 1)
                 {
-                    LatticeRenderer.HighlightCell(game.mainLattice, belt.vertices[0], beltHighlightHeadColor); //head
-                    LatticeRenderer.HighlightCell(game.mainLattice, belt.vertices[^1], beltHighlightTailColor); //tail
+                    LatticeRenderer.HighlightCell(game.mainLattice, belt.vertices[0], GameColors.beltHighlightHeadColor); //head
+                    LatticeRenderer.HighlightCell(game.mainLattice, belt.vertices[^1], GameColors.beltHighlightTailColor); //tail
                 }
             }
         }
@@ -39,7 +33,7 @@ namespace LatticeProject.Rendering
                     Raylib.DrawLineV(
                         lattice.GetCartesianCoords(belt.vertices[^1]) * RenderConfig.scale,
                         lattice.GetCartesianCoords(belt.inventoryManager.depositInventory.RecieverTile) * RenderConfig.scale,
-                        beltConnectionColor
+                        GameColors.beltConnectionColor
                         );
                 }
             }
@@ -48,7 +42,7 @@ namespace LatticeProject.Rendering
                 Raylib.DrawLineV(
                        lattice.GetCartesianCoords(game.selection.connectingBelt.vertices[^1]) * RenderConfig.scale,
                        game.mousePosition,
-                       beltConnectionColor
+                       GameColors.beltConnectionColor
                        );
             }
         }
